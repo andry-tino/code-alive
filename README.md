@@ -28,3 +28,6 @@ The renderer would be developed in Unity. Unity is a 3D engine which interacts w
 We can use WCF (Windows Communication Foundation) to have the renderer spin-up a service endpoint listening to events. The target program's source can be parsed in order to add lines of code sending the events to the service endpoint exposed by the renderer.
 
 We can use HTTP in order to enable a very versatile and decoupled architecture enabling us in future to have the two tiers in different locations and also in order to be able to parse different languages.
+
+# More info
+Find more info at the [Project Wiki](https://github.com/andry-tino/code-alive/wiki).
