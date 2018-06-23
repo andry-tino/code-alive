@@ -1,5 +1,5 @@
 # Example: WCF communication
-This example is intended to show how tosuccessfully enstablish a communication between a process and a Unity process via WCF.
+This example is intended to show how to successfully enstablish a communication between a process and a Unity process via WCF.
 
 ## Requirements
 - Must use WCF.
