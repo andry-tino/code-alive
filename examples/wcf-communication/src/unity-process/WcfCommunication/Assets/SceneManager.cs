@@ -2,14 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneManager : MonoBehaviour {
-	// Use this for initialization
-	void Start () {
-		
+/// <summary>
+/// Responsible for exposing the endpoint.
+/// </summary>
+public class SceneManager : MonoBehaviour
+{
+    private static CommunicationEndpoint communicationEndpoint;
+
+    private static CommunicationEndpoint CommunicationEndpoint
+    {
+        get
+        {
+            if (communicationEndpoint == null)
+            {
+                communicationEndpoint = new CommunicationEndpoint();
+            }
+
+            return communicationEndpoint;
+        }
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        CommunicationEndpoint.Start();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update()
+    {
+		// Nothing here
 	}
 }
