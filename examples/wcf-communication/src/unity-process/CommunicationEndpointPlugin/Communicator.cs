@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Responsible for exposing the endpoint.
 /// </summary>
-public class SceneManager : MonoBehaviour
+public class Communicator : MonoBehaviour
 {
     private static CommunicationEndpoint communicationEndpoint;
 
@@ -26,11 +26,11 @@ public class SceneManager : MonoBehaviour
     void Start()
     {
         CommunicationEndpoint.Start();
-	}
-	
-	// Update is called once per frame
-	void Update()
+    }
+
+    // Update is called once per frame
+    void Update()
     {
-		// Nothing here
-	}
+        // Nothing here
+    }
 }

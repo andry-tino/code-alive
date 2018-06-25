@@ -10,8 +10,7 @@ public class CommunicationEndpoint : IDisposable
 {
     private const short Port = 8000;
 
-    private WebServiceHost host;
-    private ServiceEndpoint endpoint;
+    private ServiceHost host;
 
     public CommunicationEndpoint()
     {
@@ -21,25 +20,32 @@ public class CommunicationEndpoint : IDisposable
     {
         this.EnsureInitilized();
 
-        host.Open();
-    }
-
-    public void Stop()
-    {
-        if (this.host != null)
+        if (this.host.State == CommunicationState.Opened || this.host.State == CommunicationState.Opening)
         {
             return;
         }
 
-        host.Close();
+        this.host.Open();
+    }
+
+    public void Stop()
+    {
+        if (this.host == null)
+        {
+            return;
+        }
+
+        if (this.host.State == CommunicationState.Closed || this.host.State == CommunicationState.Closing)
+        {
+            return;
+        }
+
+        this.host.Close();
     }
 
     public void Dispose()
     {
-        if (this.host.State != CommunicationState.Closed)
-        {
-            this.host.Close();
-        }
+        this.Stop();
 
         this.host = null;
     }
@@ -52,11 +58,11 @@ public class CommunicationEndpoint : IDisposable
         }
 
         this.host = new WebServiceHost(typeof(CommunicationService), new Uri(this.Address));
-        this.endpoint = this.host.AddServiceEndpoint(typeof(ICommunicationService), new WebHttpBinding(), "");
+        this.host.AddServiceEndpoint(typeof(ICommunicationService), new WebHttpBinding(), "");
     }
 
     private string Address
     {
-        get { return "http://localhost:" + Port + "/"; }
+        get { return $"http://localhost:{Port}/"; }
     }
 }
