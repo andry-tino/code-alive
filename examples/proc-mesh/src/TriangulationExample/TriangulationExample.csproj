@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{82A4266B-3C92-4BB6-97A3-C72E15C75279}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TriangulationExample</RootNamespace>
     <AssemblyName>TriangulationExample</AssemblyName>
@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>TriangulationExample.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>packages\GeoAPI.1.7.4\lib\net45\GeoAPI.dll</HintPath>
@@ -49,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

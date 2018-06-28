@@ -8,6 +8,7 @@ This example is intended to show how to programmatically create meshes.
 ## Resources
 - [Procedural mesh tutorial](https://www.youtube.com/watch?v=ucuOVL7c5Hw).
 - Convex Hull + Triangulation.
+    - [Theoretical background on triangulation](http://www.cs.uu.nl/docs/vakken/ga/slides9alt.pdf).
     - [Delaunay](https://en.wikipedia.org/wiki/Delaunay_triangulation).
     - [CGAL](https://doc.cgal.org).
         - [Triangulations](https://doc.cgal.org/latest/Manual/packages.html#PartTriangulationsAndDelaunayTriangulations).
