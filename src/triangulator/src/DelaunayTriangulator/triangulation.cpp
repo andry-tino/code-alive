@@ -16,6 +16,7 @@ typedef Triangulation::Vertex_handle  Vertex_handle;
 typedef Triangulation::Locate_type    Locate_type;
 typedef Triangulation::Point          Point;
 
+// External interface
 extern "C" __declspec(dllexport)
 int maintri();
 
