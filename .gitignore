@@ -371,3 +371,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# C++ Visual Studio temp directories
+**/*.dir/
