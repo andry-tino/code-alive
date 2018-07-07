@@ -22,7 +22,12 @@
     <ProjectGuid>{A2353007-60AA-4384-86A3-689AA9DF3C4A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DelaunayTriangulatorUnitTest</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="ExternalLibPaths">
+    <!-- References to libs on system -->
+    <CGALDirPath>C:\dev\CGAL-4.12</CGALDirPath>
+    <BoostDirPath>C:\dev\boost_1_67_0</BoostDirPath>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -110,6 +115,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>$(CGALDirPath)\build\lib\Debug\CGAL-vc140-mt-gd-4.12.lib;$(CGALDirPath)\auxiliary\gmp\lib\libgmp-10.lib;$(CGALDirPath)\auxiliary\gmp\lib\libmpfr-4.lib;C:\Users\antino\Documents\GitHub\code-alive\src\triangulator\src\DelaunayTriangulator\Debug\DelaunayTriangulator.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -160,7 +166,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="DelaunayTriangutatorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DelaunayTriangulator\DelaunayTriangulator.vcxproj">

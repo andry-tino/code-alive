@@ -12,9 +12,18 @@
     <ClCompile Include="triangulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DelaunayTriangulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="triangulator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DelaunayTriangulator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

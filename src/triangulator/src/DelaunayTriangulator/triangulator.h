@@ -1,5 +1,6 @@
 /*
-	Andrea Tino - 2018
+Andrea Tino - 2018
+DLL Exposure header.
 */
 
 #ifndef TRIANGULATOR_H
