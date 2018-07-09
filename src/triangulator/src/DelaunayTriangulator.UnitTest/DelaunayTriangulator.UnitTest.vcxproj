@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A2353007-60AA-4384-86A3-689AA9DF3C4A}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
+    <Keyword>X64Proj</Keyword>
     <RootNamespace>DelaunayTriangulatorUnitTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -83,12 +83,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,7 +117,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>$(CGALDirPath)\build\lib\Debug\CGAL-vc140-mt-gd-4.12.lib;$(CGALDirPath)\auxiliary\gmp\lib\libgmp-10.lib;$(CGALDirPath)\auxiliary\gmp\lib\libmpfr-4.lib;C:\Users\antino\Documents\GitHub\code-alive\src\triangulator\src\DelaunayTriangulator\Debug\DelaunayTriangulator.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(CGALDirPath)\build\lib\Debug\CGAL-vc140-mt-gd-4.12.lib;$(CGALDirPath)\auxiliary\gmp\lib\libgmp-10.lib;$(CGALDirPath)\auxiliary\gmp\lib\libmpfr-4.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\Users\antino\Documents\GitHub\code-alive\src\triangulator\src\DelaunayTriangulator\Debug\DelaunayTriangulator.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

@@ -17,13 +17,12 @@ namespace TriangulatorUnitTest
 		TEST_METHOD(PerformTriangulation)
 		{
 			DelaunayTriangulator* triangulator = new DelaunayTriangulator();
-			//int result = triangulator->Perform();
+			int result = triangulator->Perform();
 
-			//Assert::AreEqual<int>(0, result, L"Wrong result", LINE_INFO());
+			Assert::AreEqual<int>(0, result, L"Wrong result", LINE_INFO());
 
-			//delete triangulator;
+			delete triangulator;
 		}
 
 	}; // class
-}
-// ns
+} // ns
