@@ -18,6 +18,17 @@ int* fun3() {
 }
 
 int* fun4(int* p1, int l) {
+	std::list<int>* lst = new std::list<int>();
+	lst->push_front(10);
+	lst->push_front(9);
+	lst->push_front(8);
+	lst->push_front(4); // The length
+
+	std::vector<int>* v = new std::vector<int>(
+		lst->begin(), lst->end());
+	
+	int* arr = &((*v)[0]);
+
 	return 0;
 }
 

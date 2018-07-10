@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace CSharpProgram
@@ -32,28 +33,41 @@ namespace CSharpProgram
         private static void Execute1()
         {
             var p = 3;
-            var res = fun1(p);
+            int res = fun1(p);
 
-            Console.WriteLine($"Passed: {p}, got: {res}!");
+            Console.WriteLine($"1) Passed: {p}, got: {res}!");
         }
 
         private static void Execute2()
         {
             var p = new int[] { 3, 4, 5, 6 };
-            var res = fun2(p, p.Length);
+            int res = fun2(p, p.Length);
 
-            Console.WriteLine($"Passed: {p}, got: {res}!");
+            Console.WriteLine($"2) Passed: {p}, got: {res}!");
         }
 
         private static void Execute3()
         {
-            var res = fun3();
+            IntPtr res = fun3();
+            int[] arr = ExtractArray(res);
 
-            Console.WriteLine($"Passed: nothing, got: {res}!");
+            Console.WriteLine($"3) Passed: nothing, got: {arr.Select(n => $"{n}").Aggregate((a, b) => $"{a},{b}")}!");
 
             // Release memory
-            var relmemres = relmem(res);
-            Console.WriteLine($"Releasing memory: {relmemres}.");
+            if (relmem(res) != 0)
+            {
+                throw new Exception("Memory release failed on 3)");
+            }
+        }
+
+        private static int[] ExtractArray(IntPtr ptr)
+        {
+            int arrayLength = Marshal.ReadInt32(ptr);
+            ptr = IntPtr.Add(ptr, 4); // By 4 bytes
+            int[] result = new int[arrayLength];
+            Marshal.Copy(ptr, result, 0, arrayLength);
+
+            return result;
         }
     }
 }
