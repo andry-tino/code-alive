@@ -11,3 +11,17 @@ int fun1(int p1) {
 int fun2(int* p1, int l) {
 	return *(p1 + l - 1) - *(p1 + 0);
 }
+
+int* fun3() {
+	int* a = new int[4] { 3, 0, 1, 2 }; // First is length
+	return a;
+}
+
+int* fun4(int* p1, int l) {
+	return 0;
+}
+
+int relmem(int* arr) {
+	delete[] arr;
+	return 0;
+}
