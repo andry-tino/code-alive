@@ -10,4 +10,13 @@
 // Headers for CppUnitTest
 #include "CppUnitTest.h"
 
-// TODO: reference additional headers your program requires here
+// Additional headers your program requires here
+#include <list>
+#include <vector>
+#include <iostream>
+#include <fstream>
+
+#include "../DelaunayTriangulator/DelaunayTriangulator.h"
+
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Triangulation_3.h>

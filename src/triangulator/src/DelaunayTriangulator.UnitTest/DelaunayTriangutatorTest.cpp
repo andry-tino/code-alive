@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../DelaunayTriangulator/DelaunayTriangulator.h"
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 using namespace CodeAlive::Triangulation;
