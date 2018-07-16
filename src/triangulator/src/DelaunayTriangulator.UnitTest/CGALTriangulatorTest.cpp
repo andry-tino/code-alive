@@ -3,13 +3,6 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef CGAL::Triangulation_3<K>			CGALTriangulation;
-typedef CGALTriangulation::Cell_handle		Cell_handle;
-typedef CGALTriangulation::Vertex_handle	Vertex_handle;
-typedef CGALTriangulation::Locate_type		Locate_type;
-typedef CGALTriangulation::Point			Point;
-
 namespace TriangulatorUnitTest
 {
 	TEST_CLASS(CGALTriangulatorTest)
@@ -17,28 +10,34 @@ namespace TriangulatorUnitTest
 
 	public:
 
-		TEST_METHOD(CGALExampleTriangulation)
+		TEST_METHOD(PublicExampleTriangulation)
 		{
-			// Construction from a list of points :
-			std::list<Point> L;
-			L.push_front(Point(0, 0, 0));
-			L.push_front(Point(1, 0, 0));
-			L.push_front(Point(0, 1, 0));
+			typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+			typedef CGAL::Triangulation_3<K>			CGALTriangulation;
+			typedef CGALTriangulation::Cell_handle		Cell_handle;
+			typedef CGALTriangulation::Vertex_handle	Vertex_handle;
+			typedef CGALTriangulation::Locate_type		Locate_type;
+			typedef CGALTriangulation::Point			Point;
 
-			CGALTriangulation T(L.begin(), L.end());
+			// Construction from a list of points
+			std::list<Point> points;
+			points.push_front(Point(0, 0, 0));
+			points.push_front(Point(1, 0, 0));
+			points.push_front(Point(0, 1, 0));
 
+			// Perform triangulation
+			CGALTriangulation T(points.begin(), points.end());
 			CGALTriangulation::size_type n = T.number_of_vertices();
 
-			// Insertion from a vector
-			std::vector<Point> V(3);
-			V[0] = Point(0, 0, 1);
-			V[1] = Point(1, 1, 1);
-			V[2] = Point(2, 2, 2);
+			// Insert more points but using a vector instead this time
+			std::vector<Point> more_points(3);
+			more_points[0] = Point(0, 0, 1);
+			more_points[1] = Point(1, 1, 1);
+			more_points[2] = Point(2, 2, 2);
+			n += T.insert(more_points.begin(), more_points.end());
 
-			n = n + T.insert(V.begin(), V.end());
-
-			Assert::AreEqual<size_t>(6, n);	// 6 points have been inserted
-			Assert::IsTrue(T.is_valid());	// Checking validity of T
+			Assert::AreEqual<CGALTriangulation::size_type>(6, n);	// 6 points have been inserted
+			Assert::IsTrue(T.is_valid());							// Checking validity of T
 
 			Locate_type lt;
 			int li, lj;
@@ -53,7 +52,7 @@ namespace TriangulatorUnitTest
 			// v is another vertex of c
 			Cell_handle nc = c->neighbor(li);
 			// nc = neighbor of c opposite to the vertex associated with p
-			// nc must have vertex v :
+			// nc must have vertex v
 			int nli;
 			Assert::IsTrue(nc->has_vertex(v, nli)); // nli is the index of v in nc
 
@@ -66,8 +65,174 @@ namespace TriangulatorUnitTest
 			// reading file output;
 			iFileT >> T1;
 			Assert::IsTrue(T1.is_valid());
-			Assert::AreEqual<size_t>(T.number_of_vertices(), T1.number_of_vertices());
-			Assert::AreEqual<size_t>(T.number_of_cells(), T1.number_of_cells());
+			Assert::AreEqual<CGALTriangulation::size_type>(T.number_of_vertices(), T1.number_of_vertices());
+			Assert::AreEqual<CGALTriangulation::size_type>(T.number_of_cells(), T1.number_of_cells());
+		}
+
+		TEST_METHOD(PolyhedronMesh)
+		{
+			typedef CGAL::Exact_predicates_inexact_constructions_kernel  K;
+			typedef CGAL::Polyhedron_3<K>           Polyhedron_3;
+			typedef K::Point_3                      Point_3;
+			typedef CGAL::Surface_mesh<Point_3>     Surface_mesh;
+
+			std::list<Point_3> points;
+			points.push_front(Point_3(0, 0, 0));
+			points.push_front(Point_3(2, 0, 0));
+			points.push_front(Point_3(0, 2, 0));
+			points.push_front(Point_3(2, 2, 0));
+			points.push_front(Point_3(1, 1, 1));
+			
+			// Define polyhedron to hold convex hull
+			Polyhedron_3 poly;
+
+			std::stringstream buffer; // Buffer
+
+			// Compute convex hull of non-collinear points
+			CGAL::convex_hull_3(points.begin(), points.end(), poly);
+			buffer << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
+
+			Surface_mesh sm;
+			CGAL::convex_hull_3(points.begin(), points.end(), sm);
+			buffer << "The convex hull contains " << num_vertices(sm) << " vertices" << std::endl;
+
+			Assert::AreEqual<std::string>(std::string("Some"), buffer.str());
+		}
+
+		TEST_METHOD(TriangulatePolygonMesh)
+		{
+			typedef CGAL::Exact_predicates_inexact_constructions_kernel  K;
+			typedef CGAL::Polyhedron_3<K>           Polyhedron_3;
+			typedef K::Point_3                      Point_3;
+			typedef CGAL::Surface_mesh<Point_3>     Surface_mesh;
+			typedef Surface_mesh::Vertex_index		vertex_descriptor;
+			typedef Surface_mesh::Face_index		face_descriptor;
+
+			std::list<Point_3> points;
+			points.push_front(Point_3(0, 0, 0));
+			points.push_front(Point_3(2, 0, 0));
+			points.push_front(Point_3(0, 2, 0));
+			points.push_front(Point_3(2, 2, 0));
+			points.push_front(Point_3(1, 1, 1));
+
+			// Define polyhedron to hold convex hull
+			Polyhedron_3 poly;
+
+			std::stringstream buffer; // Buffer
+
+			// Compute convex hull of non-collinear points
+			CGAL::convex_hull_3(points.begin(), points.end(), poly);
+			//buffer << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
+
+			Surface_mesh sm;
+			CGAL::convex_hull_3(points.begin(), points.end(), sm);
+			//buffer << "The convex hull contains " << num_vertices(sm) << " vertices" << std::endl;
+
+			CGAL::Polygon_mesh_processing::triangulate_faces(sm);
+
+			// Confirm that all faces are triangles.
+			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm))
+				if (next(next(halfedge(fit, sm), sm), sm) != prev(halfedge(fit, sm), sm))
+					std::cerr << "Error: non-triangular face left in mesh." << std::endl;
+
+			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm))
+			{
+				CGAL::SM_Halfedge_index he1 = halfedge(fit, sm);
+				CGAL::SM_Halfedge_index he2 = next(he1, sm);
+				CGAL::SM_Halfedge_index he3 = next(he2, sm);
+
+				/*CGAL::Vertex_around_face_iterator<Surface_mesh> vbegin, vend;
+				for (boost::tie(vbegin, vend) = vertices_around_face(he1);
+					vbegin != vend;
+					++vbegin) {
+					std::cout << *vbegin << std::endl;
+				}*/
+
+				BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
+					//sm.vertices(vd)
+					buffer << vd << ",";
+				}
+
+				buffer << std::endl;
+			}
+
+			Assert::AreEqual<std::string>(std::string("Some"), buffer.str());
+		}
+
+		TEST_METHOD(TriangulationOnPyramid)
+		{
+			typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+			typedef CGAL::Delaunay_triangulation_3<K>	CGALTriangulation;
+			typedef CGALTriangulation::Cell_handle		Cell_handle;
+			typedef CGALTriangulation::Vertex_handle	Vertex_handle;
+			typedef CGALTriangulation::Locate_type		Locate_type;
+			typedef CGALTriangulation::Point			Point;
+
+			// Construction from a list of points
+			std::list<Point> points;
+			points.push_front(Point(0, 0, 0));
+			points.push_front(Point(2, 0, 0));
+			points.push_front(Point(0, 2, 0));
+			points.push_front(Point(2, 2, 0));
+			points.push_front(Point(1, 1, 1));
+
+			// Perform triangulation
+			CGALTriangulation T(points.begin(), points.end());
+			CGALTriangulation::size_type n = T.number_of_vertices();
+			CGALTriangulation::size_type ne = T.number_of_finite_edges();
+			CGALTriangulation::size_type nf = T.number_of_finite_facets();
+
+			std::stringstream buffer; // Buffer
+			
+			std::map<Point, int> vertex_ids;
+			for (CGALTriangulation::Finite_vertices_iterator it = T.finite_vertices_begin(); 
+				it != T.finite_vertices_end(); 
+				it++)
+			{
+				CGALTriangulation::Triangulation_data_structure::Vertex v = *it;
+
+				// Invoking operator[], causes size to grow first, the assignment is performed. Therefore we need -1
+				vertex_ids[v.point()] = vertex_ids.size() - 1;
+			}
+
+			for (CGALTriangulation::Finite_edges_iterator it = T.finite_edges_begin();
+				it != T.finite_edges_end();
+				it++) 
+			{
+				CGALTriangulation::Triangulation_data_structure::Edge e = *it;
+				CGALTriangulation::Triangulation_data_structure::Cell_handle c = e.first;
+				int i = e.second;
+				int j = e.third;
+
+				CGALTriangulation::Triangulation_data_structure::Vertex_handle a = c->vertex(i);
+				Point pa = a->point();
+				Point pb = c->vertex(j)->point();
+				
+				int ida = (vertex_ids.find(pa) == vertex_ids.end()) ? 0 : vertex_ids[pa];
+				int idb = (vertex_ids.find(pb) == vertex_ids.end()) ? 0 : vertex_ids[pb];
+
+				buffer << "Edge: " << pa << " (" << ida << ") to " << pb << " (" << idb << ")" << std::endl;
+			}
+
+			//Assert::AreEqual<std::string>(std::string("Some"), buffer.str());
+
+			std::stringstream buffer2; // Buffer
+			for (CGALTriangulation::Finite_facets_iterator it = T.finite_facets_begin();
+				it != T.finite_facets_end();
+				it++)
+			{
+				std::pair<CGALTriangulation::Cell_handle, int> facet = *it;
+				CGALTriangulation::Vertex_handle v1 = facet.first->vertex((facet.second + 1) % 3);
+				CGALTriangulation::Vertex_handle v2 = facet.first->vertex((facet.second + 2) % 3);
+				CGALTriangulation::Vertex_handle v3 = facet.first->vertex((facet.second + 3) % 3);
+
+				buffer2 << "Facet: " << v1->point() << "," << v2->point() << ", " << v3->point() << std::endl;
+			}
+
+			Assert::AreEqual<std::string>(std::string("Some"), buffer2.str());
+
+			Assert::AreEqual<CGALTriangulation::size_type>(5, n);
+			Assert::IsTrue(T.is_valid());
 		}
 
 	}; // class

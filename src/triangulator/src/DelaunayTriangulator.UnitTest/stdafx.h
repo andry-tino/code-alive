@@ -11,12 +11,28 @@
 #include "CppUnitTest.h"
 
 // Additional headers your program requires here
+// Std stuff
 #include <list>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <map>
+#include <utility>
 
+// My stuff
 #include "../DelaunayTriangulator/DelaunayTriangulator.h"
 
+// CGAL stuff
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Triangulation_3.h>
+#include <CGAL/Delaunay_triangulation_3.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Surface_mesh.h>
+#include <CGAL/convex_hull_3.h>
+#include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
+#include <CGAL/HalfedgeDS_decorator.h>
+#include <CGAL/Simple_cartesian.h>
+
+// Boost
+#include <boost/foreach.hpp>
