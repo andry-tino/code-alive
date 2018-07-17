@@ -143,14 +143,57 @@ namespace TriangulatorUnitTest
 
 				BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
 					Point_3 p = sm.point(vd);
-					/*double& y = sm.point(vd).y;
-					double& z = sm.point(vd).z;*/
+					double x = sm.point(vd).x();
+					double y = sm.point(vd).y();
+					double z = sm.point(vd).z();
 
 					//buffer << vd << " (" << x << " " << y << " " << z << "),";
 					buffer << vd << " (" << p << "),";
 				}
 
 				buffer << std::endl;
+			}
+
+			Assert::AreEqual<std::string>(std::string("Some"), buffer.str());
+		}
+
+		TEST_METHOD(GenerateRandomPoints)
+		{
+			typedef CGAL::Simple_cartesian<double>				R;
+			typedef R::Point_3									Point;
+			typedef CGAL::Creator_uniform_3<double, Point>		Creator;
+			typedef std::vector<Point>							Vector;
+
+			// Create test point set. Prepare a vector for 1000 points.
+			Vector points;
+			points.reserve(900);
+
+			// Create 600 points within a sphere of radius 150.
+			CGAL::Random_points_in_sphere_3<Point, Creator> g(150.0);
+			CGAL::cpp11::copy_n(g, 600, std::back_inserter(points));
+
+			// Create 200 points from a 15 x 15 grid.
+			CGAL::points_on_cube_grid_3(250.0, 200, std::back_inserter(points), Creator());
+
+			// Select 100 points randomly and append them at the end of
+			// the current vector of points.
+			CGAL::random_selection(points.begin(), points.end(), 100, std::back_inserter(points));
+			
+			// Check that we have really created 1000 points.
+			Assert::AreEqual<size_t>(900, points.size());
+			// Use a random permutation to hide the creation history
+			// of the point set.
+			CGAL::cpp98::random_shuffle(points.begin(), points.end());
+
+			// Check range of values.
+			std::stringstream buffer; // Buffer
+			for (Vector::iterator i = points.begin(); i != points.end(); i++) {
+				Assert::IsTrue(i->x() <= 251);
+				Assert::IsTrue(i->x() >= -251);
+				Assert::IsTrue(i->y() <= 251);
+				Assert::IsTrue(i->y() >= -251);
+
+				buffer << (*i) << std::endl;
 			}
 
 			Assert::AreEqual<std::string>(std::string("Some"), buffer.str());

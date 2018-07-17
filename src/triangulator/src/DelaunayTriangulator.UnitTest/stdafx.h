@@ -19,6 +19,7 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <algorithm>
 
 // My stuff
 #include "../DelaunayTriangulator/DelaunayTriangulator.h"
@@ -33,6 +34,9 @@
 #include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
 #include <CGAL/HalfedgeDS_decorator.h>
 #include <CGAL/Simple_cartesian.h>
+#include <CGAL/point_generators_3.h>
+#include <CGAL/algorithm.h>
+#include <CGAL/random_selection.h>
 
 // Boost
 #include <boost/foreach.hpp>
