@@ -133,7 +133,7 @@ namespace TriangulatorUnitTest
 			// Confirm that all faces are triangles.
 			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm))
 				if (next(next(halfedge(fit, sm), sm), sm) != prev(halfedge(fit, sm), sm))
-					std::cerr << "Error: non-triangular face left in mesh." << std::endl;
+					Assert::Fail(L"Error: non-triangular face left in mesh", LINE_INFO());
 
 			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm))
 			{
@@ -141,16 +141,13 @@ namespace TriangulatorUnitTest
 				CGAL::SM_Halfedge_index he2 = next(he1, sm);
 				CGAL::SM_Halfedge_index he3 = next(he2, sm);
 
-				/*CGAL::Vertex_around_face_iterator<Surface_mesh> vbegin, vend;
-				for (boost::tie(vbegin, vend) = vertices_around_face(he1);
-					vbegin != vend;
-					++vbegin) {
-					std::cout << *vbegin << std::endl;
-				}*/
-
 				BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
-					//sm.vertices(vd)
-					buffer << vd << ",";
+					Point_3 p = sm.point(vd);
+					/*double& y = sm.point(vd).y;
+					double& z = sm.point(vd).z;*/
+
+					//buffer << vd << " (" << x << " " << y << " " << z << "),";
+					buffer << vd << " (" << p << "),";
 				}
 
 				buffer << std::endl;
