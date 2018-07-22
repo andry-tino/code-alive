@@ -109,6 +109,10 @@ namespace TriangulatorUnitTest
 			typedef Surface_mesh::Vertex_index		vertex_descriptor;
 			typedef Surface_mesh::Face_index		face_descriptor;
 
+			std::set<Point_3> vertices;
+			std::map<int, Point_3> map_i2p;
+			std::map<Point_3, int> map_p2i;
+
 			std::list<Point_3> points;
 			points.push_front(Point_3(0, 0, 0));
 			points.push_front(Point_3(2, 0, 0));
@@ -116,14 +120,7 @@ namespace TriangulatorUnitTest
 			points.push_front(Point_3(2, 2, 0));
 			points.push_front(Point_3(1, 1, 1));
 
-			// Define polyhedron to hold convex hull
-			Polyhedron_3 poly;
-
 			std::stringstream buffer; // Buffer
-
-			// Compute convex hull of non-collinear points
-			CGAL::convex_hull_3(points.begin(), points.end(), poly);
-			//buffer << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
 
 			Surface_mesh sm;
 			CGAL::convex_hull_3(points.begin(), points.end(), sm);
@@ -136,8 +133,25 @@ namespace TriangulatorUnitTest
 				if (next(next(halfedge(fit, sm), sm), sm) != prev(halfedge(fit, sm), sm))
 					Assert::Fail(L"Error: non-triangular face left in mesh", LINE_INFO());
 
-			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm))
-			{
+			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm)) {
+				BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
+					Point_3 p = sm.point(vd);
+					vertices.insert(p);
+				}
+			}
+
+			buffer << "Set size: " << vertices.size() << std::endl << std::endl;
+
+			int i = 0;
+			for (std::set<Point_3>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
+				map_i2p[i] = *it;
+				map_p2i[*it] = i;
+				i++;
+			}
+			buffer << "Map1 size: " << map_i2p.size() << std::endl;
+			buffer << "Map2 size: " << map_p2i.size() << std::endl << std::endl;
+
+			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm)) {
 				CGAL::SM_Halfedge_index he1 = halfedge(fit, sm);
 				CGAL::SM_Halfedge_index he2 = next(he1, sm);
 				CGAL::SM_Halfedge_index he3 = next(he2, sm);

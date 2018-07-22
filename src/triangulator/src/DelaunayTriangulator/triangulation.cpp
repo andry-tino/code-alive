@@ -10,10 +10,11 @@ using namespace CodeAlive::Triangulation;
 
 int maintri()
 {
-	DelaunayTriangulator* triangulator = new DelaunayTriangulator();
+	/*DelaunayTriangulator* triangulator = new DelaunayTriangulator();
 	int result = triangulator->Perform();
 
 	delete triangulator;
 
-	return result;
+	return result;*/
+	return 0;
 }

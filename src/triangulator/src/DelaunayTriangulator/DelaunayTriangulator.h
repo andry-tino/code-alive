@@ -36,30 +36,28 @@ namespace CodeAlive
 		*/
 		class EXPORT_API DelaunayTriangulator {
 		public: // Types
-			/*
-			The array of vertices. The order is important, each vertex is enumerated by
-			its position (0-based) in the array.
-			*/
-			typedef Point* VertexArray;
-			/*
-			The array of triangles.
-			The dimension of this must always be multiple of 3. It contains the indices of points
-			inside the VertexArray which form the triangles of the mesh.
-			*/
-			typedef int* TrianglesArray;
+			typedef std::vector<Point>::const_iterator vertices_const_iterator;
+			typedef std::vector<int>::const_iterator triangles_const_iterator;
 
 		private: // Internal state
-			VertexArray vertices;
-			TrianglesArray triangles;
+			std::vector<Point> points;
+			std::vector<Point> vertices; // Respects the index order
+			std::vector<int> triangles; // References indices in vertices vector
+			bool performed;
 
-		public:
+		public: // Ctors
 			explicit DelaunayTriangulator(const std::list<Point>&);
 			explicit DelaunayTriangulator(const std::vector<Point>&);
 			DelaunayTriangulator(const DelaunayTriangulator&);
 			~DelaunayTriangulator();
 
 		public:
-			int Perform();
+			void perform();
+
+			vertices_const_iterator vertices_begin() const { return this->vertices.begin(); }
+			vertices_const_iterator vertices_end() const { return this->vertices.end(); }
+			triangles_const_iterator triangles_begin() const { return this->triangles.begin(); }
+			triangles_const_iterator triangles_end() const { return this->triangles.end(); }
 		};
 
 	} // ns Triangulation

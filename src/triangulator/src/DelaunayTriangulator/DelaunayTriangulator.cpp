@@ -3,111 +3,90 @@ Andrea Tino - 2018
 */
 
 #include <iostream>
-#include <fstream>
-#include <cassert>
 #include <list>
 #include <vector>
+#include <exception>
+
+#include <boost/foreach.hpp>
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Triangulation_3.h>
+#include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Surface_mesh.h>
+#include <CGAL/convex_hull_3.h>
 
 #include "DelaunayTriangulator.h"
-
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef CGAL::Triangulation_3<K>			CGALTriangulation;
-typedef CGALTriangulation::Cell_handle		Cell_handle;
-typedef CGALTriangulation::Vertex_handle	Vertex_handle;
-typedef CGALTriangulation::Locate_type		Locate_type;
-typedef CGALTriangulation::Point			CGALPoint;
 
 // Constructors
 
 CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const std::list<CodeAlive::Triangulation::Point>& vertices)
 {
-	this->vertices = new Point[vertices.size()];
-	this->triangles = 0;
-
-	int i = 0;
-	for (std::list<CodeAlive::Triangulation::Point>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
-		*(this->vertices + i++) = *it;
-	}
+	this->points = std::vector<Point>(vertices.begin(), vertices.end());
+	this->performed = false;
 }
 
 CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const std::vector<CodeAlive::Triangulation::Point>& vertices)
 {
-	this->vertices = new Point[vertices.size()];
-	this->triangles = 0;
-
-	int i = 0;
-	for (std::vector<CodeAlive::Triangulation::Point>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
-		*(this->vertices + i++) = *it;
-	}
+	this->points = std::vector<Point>(vertices.begin(), vertices.end());
+	this->performed = false;
 }
 
 CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const DelaunayTriangulator& other)
 {
-	// TODO
+	this->points = std::vector<Point>(other.points.begin(), other.points.end());
+	this->vertices = std::vector<Point>(other.vertices.begin(), other.vertices.end());
+	this->triangles = std::vector<int>(other.triangles.begin(), other.triangles.end());
+	this->performed = other.performed;
 }
 
 CodeAlive::Triangulation::DelaunayTriangulator::~DelaunayTriangulator()
 {
-	if (this->vertices != 0) delete this->vertices;
-	if (this->triangles != 0) delete this->triangles;
+	this->points.clear();
+	this->vertices.clear();
+	this->triangles.clear();
 }
 
 // Members
 
-int CodeAlive::Triangulation::DelaunayTriangulator::Perform() 
+void CodeAlive::Triangulation::DelaunayTriangulator::perform()
 {
-	// construction from a list of points :
-	std::list<CGALPoint> L;
-	L.push_front(CGALPoint(0, 0, 0));
-	L.push_front(CGALPoint(1, 0, 0));
-	L.push_front(CGALPoint(0, 1, 0));
+	typedef CGAL::Exact_predicates_inexact_constructions_kernel  K;
+	typedef CGAL::Polyhedron_3<K>           Polyhedron_3;
+	typedef K::Point_3                      Point_3;
+	typedef CGAL::Surface_mesh<Point_3>     Surface_mesh;
+	typedef Surface_mesh::Vertex_index		vertex_descriptor;
+	typedef Surface_mesh::Face_index		face_descriptor;
 
-	CGALTriangulation T(L.begin(), L.end());
+	// Convert into proper CGAL recognized points
+	std::list<Point_3> points;
+	for (std::vector<Point>::const_iterator it = this->points.begin(); it != this->points.end(); it++) {
+		points.push_front(Point_3(it->X, it->Y, it->Z));
+	}
 
-	CGALTriangulation::size_type n = T.number_of_vertices();
+	// Compute triangulation on the convex hull
+	Surface_mesh sm;
+	CGAL::convex_hull_3(points.begin(), points.end(), sm);
+	CGAL::Polygon_mesh_processing::triangulate_faces(sm);
 
-	// insertion from a vector :
-	std::vector<CGALPoint> V(3);
-	V[0] = CGALPoint(0, 0, 1);
-	V[1] = CGALPoint(1, 1, 1);
-	V[2] = CGALPoint(2, 2, 2);
+	// Confirm that all faces are triangles.
+	BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm))
+		if (next(next(halfedge(fit, sm), sm), sm) != prev(halfedge(fit, sm), sm))
+			throw std::exception("Error: non-triangular face left in mesh");
 
-	n = n + T.insert(V.begin(), V.end());
+	// Iterate through faces and, therefore, vertices in each triangle
+	BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm)) {
+		BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
+			Point_3 p = sm.point(vd);
+			double x = sm.point(vd).x();
+			double y = sm.point(vd).y();
+			double z = sm.point(vd).z();
 
-	assert(n == 6);       // 6 points have been inserted
-	assert(T.is_valid()); // checking validity of T
+			std::cout << vd << " (" << p << "),";
+		}
 
-	Locate_type lt;
-	int li, lj;
-	CGALPoint p(0, 0, 0);
-	Cell_handle c = T.locate(p, lt, li, lj);
-	// p is the vertex of c of index li :
-	assert(lt == CGALTriangulation::VERTEX);
-	assert(c->vertex(li)->point() == p);
+		std::cout << std::endl;
+	}
 
-	Vertex_handle v = c->vertex((li + 1) & 3);
-	// v is another vertex of c
-	Cell_handle nc = c->neighbor(li);
-	// nc = neighbor of c opposite to the vertex associated with p
-	// nc must have vertex v :
-	int nli;
-	assert(nc->has_vertex(v, nli));
-	// nli is the index of v in nc
-
-	std::ofstream oFileT("output", std::ios::out);
-	// writing file output;
-	oFileT << T;
-
-	CGALTriangulation T1;
-	std::ifstream iFileT("output", std::ios::in);
-	// reading file output;
-	iFileT >> T1;
-	assert(T1.is_valid());
-	assert(T1.number_of_vertices() == T.number_of_vertices());
-	assert(T1.number_of_cells() == T.number_of_cells());
-
-	return 0;
+	this->performed = true;
 }
