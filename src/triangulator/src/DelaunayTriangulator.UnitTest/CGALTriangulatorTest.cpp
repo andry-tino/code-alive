@@ -99,6 +99,7 @@ namespace TriangulatorUnitTest
 			Assert::AreEqual<std::string>(std::string("Some"), buffer.str());
 		}
 
+		// Use this
 		TEST_METHOD(TriangulatePolygonMesh)
 		{
 			typedef CGAL::Exact_predicates_inexact_constructions_kernel  K;

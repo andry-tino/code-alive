@@ -18,20 +18,41 @@ typedef CGAL::Triangulation_3<K>			CGALTriangulation;
 typedef CGALTriangulation::Cell_handle		Cell_handle;
 typedef CGALTriangulation::Vertex_handle	Vertex_handle;
 typedef CGALTriangulation::Locate_type		Locate_type;
-typedef CGALTriangulation::Point			Point;
+typedef CGALTriangulation::Point			CGALPoint;
 
 // Constructors
 
-CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator() 
+CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const std::list<CodeAlive::Triangulation::Point>& vertices)
 {
+	this->vertices = new Point[vertices.size()];
+	this->triangles = 0;
+
+	int i = 0;
+	for (std::list<CodeAlive::Triangulation::Point>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
+		*(this->vertices + i++) = *it;
+	}
+}
+
+CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const std::vector<CodeAlive::Triangulation::Point>& vertices)
+{
+	this->vertices = new Point[vertices.size()];
+	this->triangles = 0;
+
+	int i = 0;
+	for (std::vector<CodeAlive::Triangulation::Point>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
+		*(this->vertices + i++) = *it;
+	}
 }
 
 CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const DelaunayTriangulator& other)
 {
+	// TODO
 }
 
 CodeAlive::Triangulation::DelaunayTriangulator::~DelaunayTriangulator()
 {
+	if (this->vertices != 0) delete this->vertices;
+	if (this->triangles != 0) delete this->triangles;
 }
 
 // Members
@@ -39,20 +60,20 @@ CodeAlive::Triangulation::DelaunayTriangulator::~DelaunayTriangulator()
 int CodeAlive::Triangulation::DelaunayTriangulator::Perform() 
 {
 	// construction from a list of points :
-	std::list<Point> L;
-	L.push_front(Point(0, 0, 0));
-	L.push_front(Point(1, 0, 0));
-	L.push_front(Point(0, 1, 0));
+	std::list<CGALPoint> L;
+	L.push_front(CGALPoint(0, 0, 0));
+	L.push_front(CGALPoint(1, 0, 0));
+	L.push_front(CGALPoint(0, 1, 0));
 
 	CGALTriangulation T(L.begin(), L.end());
 
 	CGALTriangulation::size_type n = T.number_of_vertices();
 
 	// insertion from a vector :
-	std::vector<Point> V(3);
-	V[0] = Point(0, 0, 1);
-	V[1] = Point(1, 1, 1);
-	V[2] = Point(2, 2, 2);
+	std::vector<CGALPoint> V(3);
+	V[0] = CGALPoint(0, 0, 1);
+	V[1] = CGALPoint(1, 1, 1);
+	V[2] = CGALPoint(2, 2, 2);
 
 	n = n + T.insert(V.begin(), V.end());
 
@@ -61,7 +82,7 @@ int CodeAlive::Triangulation::DelaunayTriangulator::Perform()
 
 	Locate_type lt;
 	int li, lj;
-	Point p(0, 0, 0);
+	CGALPoint p(0, 0, 0);
 	Cell_handle c = T.locate(p, lt, li, lj);
 	// p is the vertex of c of index li :
 	assert(lt == CGALTriangulation::VERTEX);
