@@ -5,8 +5,6 @@
 namespace CodeAlive.Communication.Stubs
 {
     using System;
-    using System.ServiceModel;
-    using System.ServiceModel.Description;
 
     public class StubClient
     {
@@ -29,13 +27,10 @@ namespace CodeAlive.Communication.Stubs
             var address = $"http://localhost:{port}";
             Console.WriteLine($"Connecting to: {address}...");
 
-            using (var cf = new ChannelFactory<RenderingApi.ICommunicationService>(new WebHttpBinding(), address))
+            using (var channel = new RenderingApi.Client("localhost", port))
             {
                 Console.WriteLine($"Connection successful!");
-
-                cf.Endpoint.Behaviors.Add(new WebHttpBehavior());
-                RenderingApi.ICommunicationService channel = cf.CreateChannel();
-
+                
                 while (true)
                 {
                     Console.Write("Command: ");

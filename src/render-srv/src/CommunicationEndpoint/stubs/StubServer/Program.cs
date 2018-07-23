@@ -29,7 +29,7 @@ namespace CodeAlive.Communication.Stubs
 
             Console.WriteLine("Ready!");
 
-            Console.WriteLine("Press a key to kill the server!");
+            Console.WriteLine("Press ENTER key to kill the server!");
             Console.ReadLine();
         }
 
