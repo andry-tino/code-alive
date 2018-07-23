@@ -51,9 +51,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CommunicationEndpoint.csproj">
-      <Project>{ccec23e4-924b-4694-8051-f77d98c21d2e}</Project>
-      <Name>CommunicationEndpoint</Name>
+    <ProjectReference Include="..\..\api\RenderingApi\RenderingApi.csproj">
+      <Project>{a5349053-d81e-42b1-8462-d672dcd4dd8f}</Project>
+      <Name>RenderingApi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

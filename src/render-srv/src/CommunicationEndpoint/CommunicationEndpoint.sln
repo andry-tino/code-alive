@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StubServer", "stubs\StubSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StubClient", "stubs\StubClient\StubClient.csproj", "{36CDBB61-2CFF-4ACE-8086-DA8CD59EF16D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderingApi", "api\RenderingApi\RenderingApi.csproj", "{A5349053-D81E-42B1-8462-D672DCD4DD8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{36CDBB61-2CFF-4ACE-8086-DA8CD59EF16D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36CDBB61-2CFF-4ACE-8086-DA8CD59EF16D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36CDBB61-2CFF-4ACE-8086-DA8CD59EF16D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5349053-D81E-42B1-8462-D672DCD4DD8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5349053-D81E-42B1-8462-D672DCD4DD8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5349053-D81E-42B1-8462-D672DCD4DD8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5349053-D81E-42B1-8462-D672DCD4DD8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

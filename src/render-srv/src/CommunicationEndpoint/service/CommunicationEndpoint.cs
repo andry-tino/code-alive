@@ -83,7 +83,7 @@ namespace CodeAlive.Communication
             this.service.RequestReceived += this.OnRequestReceived;
 
             this.host = new WebServiceHost(service, new Uri(this.Address));
-            this.host.AddServiceEndpoint(typeof(ICommunicationService), new WebHttpBinding(), "");
+            this.host.AddServiceEndpoint(typeof(RenderingApi.ICommunicationService), new WebHttpBinding(), "");
         }
 
         private void OnRequestReceived(RenderingRequest request)

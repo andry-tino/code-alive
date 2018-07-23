@@ -13,7 +13,7 @@ namespace CodeAlive.Communication
     /// The implementation.
     /// </summary> 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    internal class CommunicationService : ICommunicationService
+    internal class CommunicationService : RenderingApi.ICommunicationService
     {
         public string EchoWithGet(string s)
         {

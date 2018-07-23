@@ -15,26 +15,28 @@ namespace CodeAlive.Communication.Stubs
         private const string CommandGeneric = "generic";
         private const string CommandQuit = "quit";
 
+        private const short DefaultPort = 8000;
+
         public static void Main(string[] args)
         {
-            Console.Write($"Enter the port to use (defaults to {Communicator.DefaultPort})");
+            Console.Write($"Enter the port to use (defaults to {DefaultPort})");
 
             short port = 0;
             var succeeded = short.TryParse(Console.ReadLine(), out port);
             if (!succeeded)
             {
-                port = Communicator.DefaultPort;
+                port = DefaultPort;
             }
 
             var address = $"http://localhost:{port}";
             Console.WriteLine($"Connecting to: {address}...");
 
-            using (var cf = new ChannelFactory<ICommunicationService>(new WebHttpBinding(), address))
+            using (var cf = new ChannelFactory<RenderingApi.ICommunicationService>(new WebHttpBinding(), address))
             {
                 Console.WriteLine($"Connection successful!");
 
                 cf.Endpoint.Behaviors.Add(new WebHttpBehavior());
-                ICommunicationService channel = cf.CreateChannel();
+                RenderingApi.ICommunicationService channel = cf.CreateChannel();
 
                 while (true)
                 {
@@ -53,7 +55,7 @@ namespace CodeAlive.Communication.Stubs
             }
         }
 
-        private static string Execute(string input, ICommunicationService svc)
+        private static string Execute(string input, RenderingApi.ICommunicationService svc)
         {
             if (input == CommandGeneric)
             {

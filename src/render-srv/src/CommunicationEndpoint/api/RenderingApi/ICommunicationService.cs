@@ -2,7 +2,7 @@
 /// Andrea Tino - 2018
 /// </summary>
 
-namespace CodeAlive.Communication
+namespace CodeAlive.Communication.RenderingApi
 {
     using System;
     using System.ServiceModel;
