@@ -25,6 +25,8 @@ namespace CodeAlive.Communication.Stubs
             Console.WriteLine($"Creating communicator server listening on port: {port}...");
             var communicator = new Communicator(port);
             communicator.DiagnosticOccurred += OnDiagnosticOccurred;
+            communicator.NewCellOccurred += OnNewCellOccurred;
+            communicator.MessageExchangeOccurred += OnMessageExchangeOccurred;
             communicator.Initialize(); // This starts the communicator
 
             Console.WriteLine("Ready!");
@@ -38,6 +40,16 @@ namespace CodeAlive.Communication.Stubs
         private static void OnDiagnosticOccurred(DiagnosticRenderingEvent e)
         {
             Console.WriteLine($"Diagnostic occurred - Content: {e.Content}");
+        }
+
+        private static void OnNewCellOccurred(NewCellRenderingEvent e)
+        {
+            Console.WriteLine($"New-Cell occurred - Id: {e.Id}");
+        }
+
+        private static void OnMessageExchangeOccurred(MessageExchangeRenderingEvent e)
+        {
+            Console.WriteLine($"Message-Exchange occurred - Name: {e.InvocationName}, Src: {e.SourceId}, Dst: {e.DestinationId}");
         }
 
         #endregion

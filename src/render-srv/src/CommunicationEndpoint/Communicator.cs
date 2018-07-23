@@ -35,6 +35,8 @@ namespace CodeAlive.Communication
         public void Initialize()
         {
             this.svc.DiagnosticReceived += this.OnDiagnosticReceived;
+            this.svc.NewInstanceReceived += this.OnNewInstanceReceived;
+            this.svc.InteractionReceived += this.OnInteractionReceived;
 
             this.svc.Start(); // Start the service
         }
@@ -43,6 +45,8 @@ namespace CodeAlive.Communication
         {
             // Unbind events
             this.svc.DiagnosticReceived -= this.OnDiagnosticReceived;
+            this.svc.NewInstanceReceived -= this.OnNewInstanceReceived;
+            this.svc.InteractionReceived -= this.OnInteractionReceived;
 
             // Dispose stuff
             this.svc.Dispose();
