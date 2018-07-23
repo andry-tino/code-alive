@@ -25,8 +25,12 @@ namespace CodeAlive.Communication.Stubs
             Console.WriteLine($"Creating communicator server listening on port: {port}...");
             var communicator = new Communicator(port);
             communicator.EventOccurred += OnEventOccurred;
+            communicator.Initialize(); // This starts the communicator
 
             Console.WriteLine("Ready!");
+
+            Console.WriteLine("Press a key to kill the server!");
+            Console.ReadLine();
         }
 
         private static void OnEventOccurred(RenderingEvent e)

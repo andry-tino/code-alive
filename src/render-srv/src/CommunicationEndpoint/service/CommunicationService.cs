@@ -5,21 +5,25 @@
 namespace CodeAlive.Communication
 {
     using System;
+    using System.ServiceModel;
 
     internal delegate void RenderingRequestHandler(RenderingRequest request);
 
     /// <summary>
     /// The implementation.
-    /// </summary>
+    /// </summary> 
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     internal class CommunicationService : ICommunicationService
     {
         public string EchoWithGet(string s)
         {
+            this.RequestReceived(new RenderingRequest());
             return "You said " + s;
         }
 
         public string EchoWithPost(string s)
         {
+            this.RequestReceived(new RenderingRequest());
             return "You said " + s;
         }
 

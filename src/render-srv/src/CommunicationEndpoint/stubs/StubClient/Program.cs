@@ -13,6 +13,7 @@ namespace CodeAlive.Communication.Stubs
     public class StubClient
     {
         private const string CommandGeneric = "generic";
+        private const string CommandQuit = "quit";
 
         public static void Main(string[] args)
         {
@@ -37,10 +38,17 @@ namespace CodeAlive.Communication.Stubs
 
                 while (true)
                 {
-                    Console.Write("Input command." + Help);
+                    Console.Write("Command: ");
 
                     var command = Console.ReadLine();
-                    Console.WriteLine($"{command} => {Execute(command, channel)}");
+                    var response = Execute(command, channel).Trim();
+
+                    Console.WriteLine($"{command} => {response}");
+
+                    if (response == CommandQuit)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -50,6 +58,11 @@ namespace CodeAlive.Communication.Stubs
             if (input == CommandGeneric)
             {
                 return svc.EchoWithGet("Hello, world");
+            }
+
+            if (input == CommandQuit)
+            {
+                return CommandQuit;
             }
 
             return "None";
