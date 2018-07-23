@@ -146,11 +146,16 @@ namespace TriangulatorUnitTest
 
 			// Populate map
 			int i = 0;
+			buffer << std::endl << std::endl << "vertices: ";
 			for (std::set<Point_3>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
 				map_i2p[i] = *it;
 				map_p2i[*it] = i;
+
+				buffer << (*it) << " = " << i << ", ";
+
 				i++;
 			}
+			buffer << std::endl << std::endl;
 			buffer << "Map1 size: " << map_i2p.size() << std::endl; // don't need this actually
 			buffer << "Map2 size: " << map_p2i.size() << std::endl << std::endl;
 
