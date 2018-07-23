@@ -33,9 +33,13 @@ namespace CodeAlive.Communication.Stubs
             Console.ReadLine();
         }
 
+        #region Events
+
         private static void OnEventOccurred(RenderingEvent e)
         {
-            Console.WriteLine($"Event occurred: {e.ToString()}");
+            Console.WriteLine($"Event occurred: {e.Type} ({e.Message})");
         }
+
+        #endregion
     }
 }

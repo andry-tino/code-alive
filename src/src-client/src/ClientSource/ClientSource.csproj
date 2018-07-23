@@ -59,5 +59,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\render-srv\src\CommunicationEndpoint\api\RenderingApi\RenderingApi.csproj">
+      <Project>{a5349053-d81e-42b1-8462-d672dcd4dd8f}</Project>
+      <Name>RenderingApi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

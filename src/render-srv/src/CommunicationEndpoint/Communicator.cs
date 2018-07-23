@@ -32,35 +32,54 @@ namespace CodeAlive.Communication
         public void Initialize()
         {
             this.svc.RequestReceived += this.OnRequestReceived;
+            this.svc.EchoReceived += this.OnEchoReceived;
+
             this.svc.Start(); // Start the service
-        }
-
-        /// <summary>
-        /// Fired every time an events occurred. This event is always fired.
-        /// </summary>
-        public event RenderingEventHandler EventOccurred;
-        
-        private void OnRequestReceived(RenderingRequest request)
-        {
-            this.TriggerEvent(request);
-        }
-
-        /// <summary>
-        /// Basing on the request, it triggers the correct event.
-        /// </summary>
-        /// <param name="request"></param>
-        private void TriggerEvent(RenderingRequest request)
-        {   
-            this.EventOccurred(new RenderingEvent());
         }
 
         public void Dispose()
         {
             // Unbind events
             this.svc.RequestReceived -= this.OnRequestReceived;
+            this.svc.EchoReceived -= this.OnEchoReceived;
 
             // Dispose stuff
             this.svc.Dispose();
         }
+
+        #region Events
+
+        /// <summary>
+        /// Fired every time an events occurred. This event is always fired.
+        /// </summary>
+        public event RenderingEventHandler EventOccurred;
+
+        #endregion
+
+        #region Lower event handlers
+
+        private void OnRequestReceived(RenderingRequest request)
+        {
+            var e = new RenderingEvent();
+
+            e.Type = RenderingEventType.Diagnostic;
+            e.Message = "Request received (generic)";
+
+            this.TriggerEvent(e);
+        }
+
+        private void OnEchoReceived(RenderingRequest request)
+        {
+            var e = new RenderingEvent();
+
+            e.Type = RenderingEventType.Diagnostic;
+            e.Message = "Echo received (generic)";
+
+            this.TriggerEvent(e);
+        }
+
+        #endregion
+        
+        private void TriggerEvent(RenderingEvent @event) => this.EventOccurred?.Invoke(@event);
     }
 }

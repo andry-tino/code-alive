@@ -62,15 +62,19 @@ namespace CodeAlive.Communication
 
             // Unbind events
             this.service.RequestReceived -= this.OnRequestReceived;
+            this.service.EchoReceived -= this.OnEchoReceived;
 
             // Remove references
             this.host = null;
         }
 
-        /// <summary>
-        /// Fired when a request is received from the client.
-        /// </summary>
+        #region Events
+
         public event RenderingRequestHandler RequestReceived;
+
+        public event RenderingRequestHandler EchoReceived;
+
+        #endregion
 
         private void EnsureInitilized()
         {
@@ -81,19 +85,29 @@ namespace CodeAlive.Communication
 
             this.service = new CommunicationService();
             this.service.RequestReceived += this.OnRequestReceived;
+            this.service.EchoReceived += this.OnEchoReceived;
 
             this.host = new WebServiceHost(service, new Uri(this.Address));
             this.host.AddServiceEndpoint(typeof(RenderingApi.ICommunicationService), new WebHttpBinding(), "");
-        }
-
-        private void OnRequestReceived(RenderingRequest request)
-        {
-            this.RequestReceived(request); // Redirect up above
         }
 
         private string Address
         {
             get { return $"http://localhost:{this.port}/"; }
         }
+
+        #region Event handlers
+
+        private void OnRequestReceived(RenderingRequest request)
+        {
+            this.RequestReceived?.Invoke(request); // Redirect up above
+        }
+
+        private void OnEchoReceived(RenderingRequest request)
+        {
+            this.RequestReceived?.Invoke(request); // Redirect up above
+        }
+
+        #endregion
     }
 }

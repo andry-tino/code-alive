@@ -15,6 +15,8 @@ namespace CodeAlive.Communication
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     internal class CommunicationService : RenderingApi.ICommunicationService
     {
+        public bool ShouldRaiseDefaultDiagEvent => false;
+
         public string Echo(string message)
         {
             this.RaiseDefaultEvents();
@@ -56,6 +58,11 @@ namespace CodeAlive.Communication
 
         private void RaiseDefaultEvents()
         {
+            if (!this.ShouldRaiseDefaultDiagEvent)
+            {
+                return;
+            }
+
             this.RequestReceived?.Invoke(new RenderingRequest());
         }
         #endregion

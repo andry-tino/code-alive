@@ -6,18 +6,23 @@ namespace CodeAlive.ClientSource
 {
     using System;
 
+    using CodeAlive.Communication.RenderingApi;
+
     public class Program
     {
+        private static Client client;
+
         public static void Main(string[] args)
         {
-            var src = CreateSource();
+            client = new Client("localhost", 8000);
+            var src = CreateSource(client);
 
             src.Run();
         }
 
-        private static ISource CreateSource()
+        private static ISource CreateSource(ICommunicationService svc)
         {
-            return new Basic.SourceRunner();
+            return new Basic.SourceRunner(svc);
         }
     }
 }
