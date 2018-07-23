@@ -7,64 +7,50 @@ namespace CodeAlive.Communication
     using System;
     using System.ServiceModel;
 
-    internal delegate void RenderingRequestHandler(RenderingRequest request);
+    using CodeAlive.Communication.RenderingApi;
+    
+    internal delegate void NewInstanceRenderingRequestHandler(NewInstanceRenderingRequest request);
+    internal delegate void InteractionRenderingRequestHandler(InteractionRenderingRequest request);
+    internal delegate string DiagnosticRenderingRequestHandler(DiagnosticRenderingRequest request);
 
     /// <summary>
     /// The implementation.
     /// </summary> 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    internal class CommunicationService : RenderingApi.ICommunicationService
+    internal class CommunicationService : ICommunicationService
     {
-        public bool ShouldRaiseDefaultDiagEvent => false;
-
-        public string Echo(string message)
+        public string Echo(DiagnosticRenderingRequest message)
         {
-            this.RaiseDefaultEvents();
-            this.RaiseEcho();
-
-            // Return the exact same message
-            return message;
+            return this.DiagnosticReceived?.Invoke(message);
         }
 
-        #region Post alternatives
-
-        public string Echo_Post(string message)
+        public void RenderNewCell(NewInstanceRenderingRequest message)
         {
-            return this.Echo(message);
+            this.NewInstanceReceived?.Invoke(message);
         }
 
-        #endregion
+        public void RenderInteraction(InteractionRenderingRequest message)
+        {
+            this.InteractionReceived?.Invoke(message);
+        }
 
         #region Events
 
         /// <summary>
-        /// Fired when a request is received from the client.
+        /// Fired when a diagnostic is received.
         /// </summary>
-        public event RenderingRequestHandler RequestReceived;
+        public event DiagnosticRenderingRequestHandler DiagnosticReceived;
 
         /// <summary>
-        /// Fired when an echo is received.
+        /// Fired when a new instance is requested to be rendered.
         /// </summary>
-        public event RenderingRequestHandler EchoReceived;
+        public event NewInstanceRenderingRequestHandler NewInstanceReceived;
 
-        #endregion
+        /// <summary>
+        /// Fired when an interaction is requested to be rendered.
+        /// </summary>
+        public event InteractionRenderingRequestHandler InteractionReceived;
 
-        #region Utils
-
-        private void RaiseEcho()
-        {
-            this.EchoReceived?.Invoke(new RenderingRequest());
-        }
-
-        private void RaiseDefaultEvents()
-        {
-            if (!this.ShouldRaiseDefaultDiagEvent)
-            {
-                return;
-            }
-
-            this.RequestReceived?.Invoke(new RenderingRequest());
-        }
         #endregion
     }
 }

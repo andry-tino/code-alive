@@ -28,14 +28,19 @@ namespace CodeAlive.Communication.RenderingApi
 
         #region API
 
-        public string Echo(string message)
+        public string Echo(DiagnosticRenderingRequest message)
         {
             return this.channel.Echo(message);
         }
 
-        public string Echo_Post(string message)
+        public void RenderInteraction(InteractionRenderingRequest message)
         {
-            return this.channel.Echo_Post(message);
+            this.channel.RenderInteraction(message);
+        }
+
+        public void RenderNewCell(NewInstanceRenderingRequest message)
+        {
+            this.channel.RenderNewCell(message);
         }
 
         #endregion

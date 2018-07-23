@@ -23,16 +23,25 @@ namespace CodeAlive.Communication.RenderingApi
         /// <param name="message">Message to be echoed mack by the server.</param>
         /// <returns></returns>
         [OperationContract]
-        [WebGet]
-        string Echo(string message);
+        [WebInvoke]
+        string Echo(DiagnosticRenderingRequest message);
 
         /// <summary>
-        /// An echo service message.
+        /// Ask to render a new cell.
         /// </summary>
-        /// <param name="message">Message to be echoed mack by the server.</param>
-        /// <returns></returns>
+        /// <param name="cellId"></param>
         [OperationContract]
         [WebInvoke]
-        string Echo_Post(string message);
+        void RenderNewCell(NewInstanceRenderingRequest message);
+
+        /// <summary>
+        /// Ask to render an interaction between two cells.
+        /// </summary>
+        /// <param name="interactionName"></param>
+        /// <param name="sourceCellId"></param>
+        /// <param name="dstCellId"></param>
+        [OperationContract]
+        [WebInvoke]
+        void RenderInteraction(InteractionRenderingRequest message);
     }
 }

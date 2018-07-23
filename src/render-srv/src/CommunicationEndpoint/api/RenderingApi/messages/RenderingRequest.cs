@@ -2,7 +2,7 @@
 /// Andrea Tino - 2018
 /// </summary>
 
-namespace CodeAlive.Communication
+namespace CodeAlive.Communication.RenderingApi
 {
     using System;
     using System.Runtime.Serialization;
@@ -11,7 +11,7 @@ namespace CodeAlive.Communication
     /// Class responsible for describing the rendering request coming from the client.
     /// </summary>
     [DataContract(Name = "RenderingRequest")]
-    internal class RenderingRequest
+    public class RenderingRequest
     {
 
     }

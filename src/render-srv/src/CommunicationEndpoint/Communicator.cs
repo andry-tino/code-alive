@@ -7,10 +7,11 @@ namespace CodeAlive.Communication
     using System;
 
     using CodeAlive.Communication.Eventing;
+    using CodeAlive.Communication.RenderingApi;
 
-    public delegate void RenderingEventHandler(RenderingEvent e);
     public delegate void DiagnosticRenderingEventHandler(DiagnosticRenderingEvent e);
-    public delegate void EchoRenderingEventHandler(EchoRenderingEvent e);
+    public delegate void NewCellRenderingEventHandler(NewCellRenderingEvent e);
+    public delegate void MessageExchangeRenderingEventHandler(MessageExchangeRenderingEvent e);
 
     /// <summary>
     /// The interface for interacting with the Communication API.
@@ -33,8 +34,7 @@ namespace CodeAlive.Communication
 
         public void Initialize()
         {
-            this.svc.RequestReceived += this.OnRequestReceived;
-            this.svc.EchoReceived += this.OnEchoReceived;
+            this.svc.DiagnosticReceived += this.OnDiagnosticReceived;
 
             this.svc.Start(); // Start the service
         }
@@ -42,48 +42,60 @@ namespace CodeAlive.Communication
         public void Dispose()
         {
             // Unbind events
-            this.svc.RequestReceived -= this.OnRequestReceived;
-            this.svc.EchoReceived -= this.OnEchoReceived;
+            this.svc.DiagnosticReceived -= this.OnDiagnosticReceived;
 
             // Dispose stuff
             this.svc.Dispose();
         }
 
         #region Events
-
-        /// <summary>
-        /// Fired every time an events occurred. This event is always fired.
-        /// </summary>
-        public event RenderingEventHandler EventOccurred;
-
-        /// <summary>
-        /// Fired when an echo is received.
-        /// </summary>
-        public event EchoRenderingEventHandler EchoOccurred;
+        
 
         /// <summary>
         /// Fired when a diagnostic event is received.
         /// </summary>
         public event DiagnosticRenderingEventHandler DiagnosticOccurred;
 
+        /// <summary>
+        /// Fired when a new cell should be drawn.
+        /// </summary>
+        public event NewCellRenderingEventHandler NewCellOccurred;
+
+        /// <summary>
+        /// Fired when an exchange should be drawn.
+        /// </summary>
+        public event MessageExchangeRenderingEventHandler MessageExchangeOccurred;
+
         #endregion
 
         #region Lower event handlers
 
-        private void OnRequestReceived(RenderingRequest request)
+        private string OnDiagnosticReceived(DiagnosticRenderingRequest request)
         {
             var e = new DiagnosticRenderingEvent();
-            e.Message = "Request received (generic)";
+            e.Content = request.Content;
 
-            this.EventOccurred?.Invoke(e);
+            this.DiagnosticOccurred?.Invoke(e);
+
+            return request.Content.Clone() as string;
         }
 
-        private void OnEchoReceived(RenderingRequest request)
+        private void OnNewInstanceReceived(NewInstanceRenderingRequest request)
         {
-            var e = new EchoRenderingEvent();
-            e.Content = "Echo received";
+            var e = new NewCellRenderingEvent();
+            e.Id = request.InstanceId;
 
-            this.EchoOccurred?.Invoke(e);
+            this.NewCellOccurred?.Invoke(e);
+        }
+
+        private void OnInteractionReceived(InteractionRenderingRequest request)
+        {
+            var e = new MessageExchangeRenderingEvent();
+            e.InvocationName = request.InvocationName;
+            e.SourceId = request.SourceInstanceId;
+            e.DestinationId = request.DstInstanceId;
+
+            this.MessageExchangeOccurred?.Invoke(e);
         }
 
         #endregion

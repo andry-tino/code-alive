@@ -8,6 +8,8 @@ namespace CodeAlive.Communication
     using System.ServiceModel;
     using System.ServiceModel.Web;
 
+    using CodeAlive.Communication.RenderingApi;
+
     /// <summary>
     /// Holds the endpoint logic.
     /// </summary>
@@ -61,18 +63,21 @@ namespace CodeAlive.Communication
             this.Stop();
 
             // Unbind events
-            this.service.RequestReceived -= this.OnRequestReceived;
-            this.service.EchoReceived -= this.OnEchoReceived;
+            this.service.DiagnosticReceived -= this.OnDiagnosticReceived;
+            this.service.NewInstanceReceived -= this.OnNewInstanceReceived;
+            this.service.InteractionReceived -= this.InteractionReceived;
 
             // Remove references
             this.host = null;
         }
 
         #region Events
-
-        public event RenderingRequestHandler RequestReceived;
-
-        public event RenderingRequestHandler EchoReceived;
+        
+        public event DiagnosticRenderingRequestHandler DiagnosticReceived;
+        
+        public event NewInstanceRenderingRequestHandler NewInstanceReceived;
+        
+        public event InteractionRenderingRequestHandler InteractionReceived;
 
         #endregion
 
@@ -84,8 +89,9 @@ namespace CodeAlive.Communication
             }
 
             this.service = new CommunicationService();
-            this.service.RequestReceived += this.OnRequestReceived;
-            this.service.EchoReceived += this.OnEchoReceived;
+            this.service.DiagnosticReceived += this.OnDiagnosticReceived;
+            this.service.NewInstanceReceived += this.OnNewInstanceReceived;
+            this.service.InteractionReceived += this.InteractionReceived;
 
             this.host = new WebServiceHost(service, new Uri(this.Address));
             this.host.AddServiceEndpoint(typeof(RenderingApi.ICommunicationService), new WebHttpBinding(), "");
@@ -98,14 +104,19 @@ namespace CodeAlive.Communication
 
         #region Event handlers
 
-        private void OnRequestReceived(RenderingRequest request)
+        private string OnDiagnosticReceived(DiagnosticRenderingRequest request)
         {
-            this.RequestReceived?.Invoke(request); // Redirect up above
+            return this.DiagnosticReceived?.Invoke(request); // Redirect up above
         }
 
-        private void OnEchoReceived(RenderingRequest request)
+        private void OnNewInstanceReceived(NewInstanceRenderingRequest request)
         {
-            this.RequestReceived?.Invoke(request); // Redirect up above
+            this.NewInstanceReceived?.Invoke(request); // Redirect up above
+        }
+
+        private void OnInteractionReceived(InteractionRenderingRequest request)
+        {
+            this.InteractionReceived?.Invoke(request); // Redirect up above
         }
 
         #endregion

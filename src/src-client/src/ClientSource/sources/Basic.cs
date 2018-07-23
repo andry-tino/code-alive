@@ -24,43 +24,43 @@ namespace CodeAlive.ClientSource.Basic
         {
             // Create an instance
             var person = new Person();
-            this.svc.Echo("Create an instance");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Create an instance" });
 
             // Assign a property
             person.Name = "Claus";
-            this.svc.Echo("Assign a property");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
 
             // Assign a property
             person.Surname = "Valca";
-            this.svc.Echo("Assign a property");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
 
             // Create an instance
             var piano = new Instrument();
-            this.svc.Echo("Create an instance");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Create an instance" });
 
             // Assign a property
             piano.Name = "Classic Piano";
-            this.svc.Echo("Assign a property");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
 
             // Create an instance
             var harmonica = new Instrument();
-            this.svc.Echo("Create an instance");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Create an instance" });
 
             // Assign a property
             harmonica.Name = "Harmonica";
-            this.svc.Echo("Assign a property");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
 
             // Assign a property
             person.Instrument1 = piano;
-            this.svc.Echo("Assign a property");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
 
             // Assign a property
             person.Instrument2 = harmonica;
-            this.svc.Echo("Assign a property");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
 
             // Execute a method returning a value
             var result = person.Play();
-            this.svc.Echo("Execute a method returning a value");
+            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Execute a method returning a value" });
         }
 
         #region Types

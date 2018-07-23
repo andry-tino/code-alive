@@ -45,12 +45,13 @@
   <ItemGroup>
     <Compile Include="events\DiagnosticRenderingEvent.cs" />
     <Compile Include="events\EchoRenderingEvent.cs" />
+    <Compile Include="events\MessageExchangeRenderingEvent.cs" />
+    <Compile Include="events\NewCellRenderingEvent.cs" />
     <Compile Include="events\RenderingEvent.cs" />
     <Compile Include="service\CommunicationEndpoint.cs" />
     <Compile Include="Communicator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="service\CommunicationService.cs" />
-    <Compile Include="service\RenderingRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="api\RenderingApi\RenderingApi.csproj">

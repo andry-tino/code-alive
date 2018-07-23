@@ -52,7 +52,7 @@ namespace CodeAlive.Communication.Stubs
         {
             if (input == CommandEcho)
             {
-                return svc.Echo("Hello, world");
+                return svc.Echo(new RenderingApi.DiagnosticRenderingRequest() { Content = "This is an echo" });
             }
 
             if (input == CommandQuit)
