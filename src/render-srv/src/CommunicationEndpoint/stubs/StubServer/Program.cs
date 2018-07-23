@@ -1,6 +1,6 @@
-﻿///
+﻿/// <summary>
 /// Andrea Tino - 2018
-///
+/// </summary>
 
 namespace CodeAlive.Communication.Stubs
 {
