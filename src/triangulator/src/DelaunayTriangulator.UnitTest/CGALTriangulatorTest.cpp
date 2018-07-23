@@ -112,6 +112,7 @@ namespace TriangulatorUnitTest
 			std::set<Point_3> vertices;
 			std::map<int, Point_3> map_i2p;
 			std::map<Point_3, int> map_p2i;
+			std::vector<int> triangles;
 
 			std::list<Point_3> points;
 			points.push_front(Point_3(0, 0, 0));
@@ -133,6 +134,7 @@ namespace TriangulatorUnitTest
 				if (next(next(halfedge(fit, sm), sm), sm) != prev(halfedge(fit, sm), sm))
 					Assert::Fail(L"Error: non-triangular face left in mesh", LINE_INFO());
 
+			// Get vertices
 			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm)) {
 				BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
 					Point_3 p = sm.point(vd);
@@ -142,13 +144,14 @@ namespace TriangulatorUnitTest
 
 			buffer << "Set size: " << vertices.size() << std::endl << std::endl;
 
+			// Populate map
 			int i = 0;
 			for (std::set<Point_3>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
 				map_i2p[i] = *it;
 				map_p2i[*it] = i;
 				i++;
 			}
-			buffer << "Map1 size: " << map_i2p.size() << std::endl;
+			buffer << "Map1 size: " << map_i2p.size() << std::endl; // don't need this actually
 			buffer << "Map2 size: " << map_p2i.size() << std::endl << std::endl;
 
 			BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm)) {
@@ -162,11 +165,19 @@ namespace TriangulatorUnitTest
 					double y = sm.point(vd).y();
 					double z = sm.point(vd).z();
 
+					int i = map_p2i[p];
+					triangles.push_back(i);
+
 					//buffer << vd << " (" << x << " " << y << " " << z << "),";
 					buffer << vd << " (" << p << "),";
 				}
 
 				buffer << std::endl;
+			}
+
+			buffer << std::endl << "triangles: ";
+			for (std::vector<int>::const_iterator it = triangles.begin(); it != triangles.end(); it++) {
+				buffer << (*it) << " ";
 			}
 
 			Assert::AreEqual<std::string>(std::string("Some"), buffer.str());

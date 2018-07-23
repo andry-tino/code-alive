@@ -6,6 +6,8 @@ Andrea Tino - 2018
 #include <list>
 #include <vector>
 #include <exception>
+#include <set>
+#include <map>
 
 #include <boost/foreach.hpp>
 
@@ -51,9 +53,7 @@ CodeAlive::Triangulation::DelaunayTriangulator::~DelaunayTriangulator()
 
 void CodeAlive::Triangulation::DelaunayTriangulator::perform()
 {
-	typedef CGAL::Exact_predicates_inexact_constructions_kernel  K;
 	typedef CGAL::Polyhedron_3<K>           Polyhedron_3;
-	typedef K::Point_3                      Point_3;
 	typedef CGAL::Surface_mesh<Point_3>     Surface_mesh;
 	typedef Surface_mesh::Vertex_index		vertex_descriptor;
 	typedef Surface_mesh::Face_index		face_descriptor;
@@ -74,19 +74,41 @@ void CodeAlive::Triangulation::DelaunayTriangulator::perform()
 		if (next(next(halfedge(fit, sm), sm), sm) != prev(halfedge(fit, sm), sm))
 			throw std::exception("Error: non-triangular face left in mesh");
 
-	// Iterate through faces and, therefore, vertices in each triangle
+	// Populate the set of vertices to get the subset of vertices that were used for the triangulation
+	std::set<Point_3> vertices;
 	BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm)) {
 		BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
 			Point_3 p = sm.point(vd);
-			double x = sm.point(vd).x();
-			double y = sm.point(vd).y();
-			double z = sm.point(vd).z();
-
-			std::cout << vd << " (" << p << "),";
+			vertices.insert(p);
 		}
+	}
 
-		std::cout << std::endl;
+	// Populate the map to get the index of a vertex
+	// Also populate the array of vertices in the order defined
+	{ int i = 0;
+		for (std::set<Point_3>::const_iterator it = vertices.begin(); it != vertices.end(); it++) {
+			this->p2i[*it] = i++;
+
+			Point v; v.X = it->x(); v.Y = it->y(); v.Z = it->z();
+			this->vertices.push_back(v);
+		}
+	}
+
+	// Iterate through faces and, therefore, vertices in each triangle. Populate the triangles array
+	BOOST_FOREACH(boost::graph_traits<Surface_mesh>::face_descriptor fit, faces(sm)) {
+		BOOST_FOREACH(vertex_descriptor vd, vertices_around_face(sm.halfedge(fit), sm)) {
+			Point_3 p = sm.point(vd);
+			int index = this->p2i[p];
+
+			this->triangles.push_back(index);
+		}
 	}
 
 	this->performed = true;
+}
+
+int CodeAlive::Triangulation::DelaunayTriangulator::get_vertex_index(const CodeAlive::Triangulation::Point& point)
+{
+	Point_3 p(point.X, point.Y, point.Z);
+	return this->p2i[p];
 }

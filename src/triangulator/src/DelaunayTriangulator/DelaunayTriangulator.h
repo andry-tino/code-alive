@@ -9,6 +9,9 @@ Andrea Tino - 2018
 
 #include <vector>
 #include <list>
+#include <map>
+
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 
 namespace CodeAlive
 {
@@ -39,10 +42,17 @@ namespace CodeAlive
 			typedef std::vector<Point>::const_iterator vertices_const_iterator;
 			typedef std::vector<int>::const_iterator triangles_const_iterator;
 
+		private: // Private types
+			typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+			typedef K::Point_3 Point_3;
+
 		private: // Internal state
 			std::vector<Point> points;
 			std::vector<Point> vertices; // Respects the index order
 			std::vector<int> triangles; // References indices in vertices vector
+
+			// Helpers
+			std::map<Point_3, int> p2i;
 			bool performed;
 
 		public: // Ctors
@@ -53,6 +63,7 @@ namespace CodeAlive
 
 		public:
 			void perform();
+			int get_vertex_index(const Point&);
 
 			vertices_const_iterator vertices_begin() const { return this->vertices.begin(); }
 			vertices_const_iterator vertices_end() const { return this->vertices.end(); }
