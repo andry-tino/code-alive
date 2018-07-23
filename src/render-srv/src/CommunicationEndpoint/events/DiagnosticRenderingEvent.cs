@@ -9,20 +9,15 @@ namespace CodeAlive.Communication.Eventing
     /// <summary>
     /// Event descriptor.
     /// </summary>
-    public class RenderingEvent
+    public class DiagnosticRenderingEvent : EchoRenderingEvent
     {
-        /// <summary>
-        /// When specified, the debug console will display a message.
-        /// </summary>
-        public string Message { get; set; }
-
         /// <summary>
         /// Provides a string representation.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return "RenderingEvent";
+            return "DiagnosticRenderingEvent";
         }
     }
 }

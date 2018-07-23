@@ -9,6 +9,8 @@ namespace CodeAlive.Communication
     using CodeAlive.Communication.Eventing;
 
     public delegate void RenderingEventHandler(RenderingEvent e);
+    public delegate void DiagnosticRenderingEventHandler(DiagnosticRenderingEvent e);
+    public delegate void EchoRenderingEventHandler(EchoRenderingEvent e);
 
     /// <summary>
     /// The interface for interacting with the Communication API.
@@ -54,32 +56,36 @@ namespace CodeAlive.Communication
         /// </summary>
         public event RenderingEventHandler EventOccurred;
 
+        /// <summary>
+        /// Fired when an echo is received.
+        /// </summary>
+        public event EchoRenderingEventHandler EchoOccurred;
+
+        /// <summary>
+        /// Fired when a diagnostic event is received.
+        /// </summary>
+        public event DiagnosticRenderingEventHandler DiagnosticOccurred;
+
         #endregion
 
         #region Lower event handlers
 
         private void OnRequestReceived(RenderingRequest request)
         {
-            var e = new RenderingEvent();
-
-            e.Type = RenderingEventType.Diagnostic;
+            var e = new DiagnosticRenderingEvent();
             e.Message = "Request received (generic)";
 
-            this.TriggerEvent(e);
+            this.EventOccurred?.Invoke(e);
         }
 
         private void OnEchoReceived(RenderingRequest request)
         {
-            var e = new RenderingEvent();
+            var e = new EchoRenderingEvent();
+            e.Content = "Echo received";
 
-            e.Type = RenderingEventType.Diagnostic;
-            e.Message = "Echo received (generic)";
-
-            this.TriggerEvent(e);
+            this.EchoOccurred?.Invoke(e);
         }
 
         #endregion
-        
-        private void TriggerEvent(RenderingEvent @event) => this.EventOccurred?.Invoke(@event);
     }
 }

@@ -25,6 +25,7 @@ namespace CodeAlive.Communication.Stubs
             Console.WriteLine($"Creating communicator server listening on port: {port}...");
             var communicator = new Communicator(port);
             communicator.EventOccurred += OnEventOccurred;
+            communicator.EchoOccurred += OnEchoOccurred;
             communicator.Initialize(); // This starts the communicator
 
             Console.WriteLine("Ready!");
@@ -37,7 +38,12 @@ namespace CodeAlive.Communication.Stubs
 
         private static void OnEventOccurred(RenderingEvent e)
         {
-            Console.WriteLine($"Event occurred: {e.Type} ({e.Message})");
+            Console.WriteLine($"Event occurred - Type: {e.ToString()}, Message: {e.Message}");
+        }
+
+        private static void OnEchoOccurred(EchoRenderingEvent e)
+        {
+            Console.WriteLine($"Echo occurred - Content: {e.Content}");
         }
 
         #endregion
