@@ -16,22 +16,16 @@ namespace CodeAlive.Communication
     /// </summary>
     public class Communicator : IDisposable
     {
+        public const short DefaultPort = 8000;
+
         private CommunicationEndpoint svc;
         private short port;
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="Communicator"/> class.
-        /// </summary>
-        public Communicator()
-        {
-            this.svc = new CommunicationEndpoint();
-        }
-
+        
         /// <summary>
         /// Creates a new instance of the <see cref="Communicator"/> class.
         /// </summary>
         /// <param name="port">The port to use.</param>
-        public Communicator(short port)
+        public Communicator(short port = DefaultPort)
         {
             this.svc = new CommunicationEndpoint(port);
         }
@@ -43,9 +37,9 @@ namespace CodeAlive.Communication
         }
 
         /// <summary>
-        /// Example of event.
+        /// Fired every time an events occurred. This event is always fired.
         /// </summary>
-        public event RenderingEventHandler SomethingHappened;
+        public event RenderingEventHandler EventOccurred;
         
         private void OnRequestReceived(RenderingRequest request)
         {
@@ -57,8 +51,8 @@ namespace CodeAlive.Communication
         /// </summary>
         /// <param name="request"></param>
         private void TriggerEvent(RenderingRequest request)
-        {
-
+        {   
+            this.EventOccurred(new RenderingEvent());
         }
 
         public void Dispose()

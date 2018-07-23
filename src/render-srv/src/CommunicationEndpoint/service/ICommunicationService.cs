@@ -12,7 +12,7 @@ namespace CodeAlive.Communication
     /// The contract.
     /// </summary>
     [ServiceContract]
-    internal interface ICommunicationService
+    public interface ICommunicationService
     {
         [OperationContract]
         [WebGet]
