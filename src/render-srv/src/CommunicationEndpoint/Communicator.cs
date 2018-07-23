@@ -19,7 +19,6 @@ namespace CodeAlive.Communication
         public const short DefaultPort = 8000;
 
         private CommunicationEndpoint svc;
-        private short port;
         
         /// <summary>
         /// Creates a new instance of the <see cref="Communicator"/> class.

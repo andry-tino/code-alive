@@ -9,17 +9,30 @@ namespace CodeAlive.Communication.RenderingApi
     using System.ServiceModel.Web;
 
     /// <summary>
-    /// The contract.
+    /// The contract for service.
     /// </summary>
+    /// <remarks>
+    /// Passed values are passed from client. Return values are server responses.
+    /// </remarks>
     [ServiceContract]
     public interface ICommunicationService
     {
+        /// <summary>
+        /// An echo service message.
+        /// </summary>
+        /// <param name="message">Message to be echoed mack by the server.</param>
+        /// <returns></returns>
         [OperationContract]
         [WebGet]
-        string EchoWithGet(string s);
+        string Echo(string message);
 
+        /// <summary>
+        /// An echo service message.
+        /// </summary>
+        /// <param name="message">Message to be echoed mack by the server.</param>
+        /// <returns></returns>
         [OperationContract]
         [WebInvoke]
-        string EchoWithPost(string s);
+        string Echo_Post(string message);
     }
 }

@@ -8,11 +8,9 @@ namespace CodeAlive.Communication.Stubs
     using System.ServiceModel;
     using System.ServiceModel.Description;
 
-    using CodeAlive.Communication;
-
     public class StubClient
     {
-        private const string CommandGeneric = "generic";
+        private const string CommandEcho = "echo";
         private const string CommandQuit = "quit";
 
         private const short DefaultPort = 8000;
@@ -57,9 +55,9 @@ namespace CodeAlive.Communication.Stubs
 
         private static string Execute(string input, RenderingApi.ICommunicationService svc)
         {
-            if (input == CommandGeneric)
+            if (input == CommandEcho)
             {
-                return svc.EchoWithGet("Hello, world");
+                return svc.Echo("Hello, world");
             }
 
             if (input == CommandQuit)
@@ -71,7 +69,7 @@ namespace CodeAlive.Communication.Stubs
         }
 
         private static string Help => $@"
-            => '{CommandGeneric}': Something
+            => '{CommandEcho}': Send an echo
         ";
     }
 }
