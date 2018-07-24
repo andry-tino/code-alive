@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public string ServerHostName = "localhost";
 
+    /// <summary>
+    /// The instantiator to use.
+    /// </summary>
     public Instantiator CellInstanceManager;
 
     #endregion

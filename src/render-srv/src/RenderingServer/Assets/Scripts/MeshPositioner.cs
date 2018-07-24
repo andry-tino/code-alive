@@ -1,4 +1,8 @@
-﻿using System;
+﻿/// <summary>
+/// Andrea Tino - 2018
+/// </summary>
+
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
