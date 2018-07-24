@@ -63,6 +63,10 @@ public class GameManager : MonoBehaviour
 
     void RenderNewCell(string id)
     {
+        var cellBuilder = new StaticCellMeshBuilder();
+        var mesh = cellBuilder.Create();
+
+        Instantiate(mesh);
     }
 
     void RenderMessageExchange(string name, string srcId, string dstId)
