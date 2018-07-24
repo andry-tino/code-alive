@@ -16,7 +16,9 @@ namespace CodeAlive.Communication
     internal class CommunicationEndpoint : IDisposable
     {
         public const short DefaultPort = 8000;
+        public const string DefaultHostName = "localhost";
 
+        private string hostname;
         private short port;
         private CommunicationService service;
         private ServiceHost host;
@@ -24,10 +26,20 @@ namespace CodeAlive.Communication
         /// <summary>
         /// Creates a new instance of the <see cref="CommunicationEndpoint"/> class.
         /// </summary>
-        /// <param name="port">The port to use. Defaults to <see cref="DefaultPort"/></param>
-        public CommunicationEndpoint(short port = DefaultPort)
+        /// <param name="hostname">The hostname to use. Defaults to <see cref="DefaultHostName"/>.</param>
+        /// <param name="port">The port to use. Defaults to <see cref="DefaultPort"/>.</param>
+        public CommunicationEndpoint(string hostname = DefaultHostName, short port = DefaultPort)
         {
+            this.hostname = hostname;
             this.port = port;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="CommunicationEndpoint"/> class.
+        /// </summary>
+        /// <param name="port">The port to use.</param>
+        public CommunicationEndpoint(short port) : this(DefaultHostName, port)
+        {
         }
 
         public void Start()
@@ -99,7 +111,7 @@ namespace CodeAlive.Communication
 
         private string Address
         {
-            get { return $"http://localhost:{this.port}/"; }
+            get { return $"http://{this.hostname}:{this.port}/"; }
         }
 
         #region Event handlers

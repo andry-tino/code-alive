@@ -20,16 +20,26 @@ namespace CodeAlive.Communication
     public class Communicator : IDisposable
     {
         public const short DefaultPort = 8000;
+        public const string DefaultHostName = "localhost";
 
         private CommunicationEndpoint svc;
         
         /// <summary>
         /// Creates a new instance of the <see cref="Communicator"/> class.
         /// </summary>
+        /// <param name="hostname">The hostname to use.</param>
         /// <param name="port">The port to use.</param>
-        public Communicator(short port = DefaultPort)
+        public Communicator(string hostname = DefaultHostName, short port = DefaultPort)
         {
-            this.svc = new CommunicationEndpoint(port);
+            this.svc = new CommunicationEndpoint(hostname, port);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Communicator"/> class.
+        /// </summary>
+        /// <param name="port">The port to use.</param>
+        public Communicator(short port) : this(DefaultHostName, port)
+        {
         }
 
         public void Initialize()

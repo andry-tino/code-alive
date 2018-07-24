@@ -9,4 +9,11 @@ $UnityProjectLibPath = Join-Path $UnityProjectAssetsPath 'Libraries'
 
 $CommunicationEndpointProjectBinPath = Join-Path $Path 'render-srv\src\CommunicationEndpoint\bin\Debug'
 
+Write-Host "Copying dlls from $CommunicationEndpointProjectBinPath to $UnityProjectLibPath..." -ForegroundColor Yellow
+
 Copy-Item -Path "$CommunicationEndpointProjectBinPath\*.dll" -Destination $UnityProjectLibPath
+
+if ($LASTEXITCODE -eq 0)
+{
+    Write-Host "Done" -ForegroundColor Green
+}
