@@ -8,7 +8,69 @@ using UnityEngine;
 /// </summary>
 public class CellMesh : MonoBehaviour
 {
+    #region Declarations for interop
+
+    private const string DllPath = @"C:\Users\antino\Documents\GitHub\code-alive\src\triangulator\src\DelaunayTriangulator\Debug\DelaunayTriangulator.dll";
+
+    [DllImport(DllPath)]
+    private static extern void codealive_triangulator_perform(int num);
+
+    [DllImport(DllPath)]
+    private static extern void codealive_triangulator_dispose();
+
+    [DllImport(DllPath)]
+    private static extern int codealive_triangulator_get_vertices_num();
+
+    [DllImport(DllPath)]
+    private static extern int codealive_triangulator_get_triangles_vlen();
+
+    [DllImport(DllPath)]
+    private static extern double codealive_triangulator_get_vertex(int index, int vindex);
+
+    [DllImport(DllPath)]
+    private static extern IntPtr codealive_triangulator_get_triangles();
+
+    #endregion
+
     void Start()
+    {
+        //this.CreateBasicVoxel();
+        this.CreateFromTriangulation(30);
+    }
+
+    void CreateFromTriangulation(int numberOfPoints)
+    {
+        // Generate rnd set and triangulate
+        codealive_triangulator_perform(numberOfPoints);
+
+        // Handle vertices
+        int numberOfVertices = codealive_triangulator_get_vertices_num();
+
+        Vector3[] vertices = new Vector3[numberOfVertices];
+        for (int i = 0; i < numberOfVertices; i++)
+        {
+            double x = codealive_triangulator_get_vertex(i, 0);
+            double y = codealive_triangulator_get_vertex(i, 1);
+            double z = codealive_triangulator_get_vertex(i, 2);
+
+            vertices[i] = new Vector3((float)x, (float)y, (float)z);
+        }
+
+        // Handle triangles
+        int trianglesLen = codealive_triangulator_get_triangles_vlen();
+        IntPtr trianglesPtr = codealive_triangulator_get_triangles();
+        int[] triangles = ExtractArray(trianglesPtr, trianglesLen);
+
+        // Clear up memory
+        codealive_triangulator_dispose();
+
+        // Build mesh
+        var mesh = GetComponent<MeshFilter>().mesh = new Mesh();
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+    }
+
+    void CreateBasicVoxel()
     {
         var vertices = new Vector3[]
         {
@@ -46,15 +108,23 @@ public class CellMesh : MonoBehaviour
 
     void Update()
     {
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
-        Vector3[] vertices = mesh.vertices;
-        Vector3[] normals = mesh.normals;
+        //Mesh mesh = GetComponent<MeshFilter>().mesh;
+        //Vector3[] vertices = mesh.vertices;
+        //Vector3[] normals = mesh.normals;
 
-        for (int i = 0, l = vertices.Length; i < l; i++)
-        {
-            vertices[i] += normals[i] * 0.002f * Mathf.Sin(Time.time);
-        }
+        //for (int i = 0, l = vertices.Length; i < l; i++)
+        //{
+        //    vertices[i] += normals[i] * 0.002f * Mathf.Sin(Time.time);
+        //}
         
-        mesh.vertices = vertices;
+        //mesh.vertices = vertices;
+    }
+
+    private static int[] ExtractArray(IntPtr ptr, int arrayLength)
+    {
+        int[] result = new int[arrayLength];
+        Marshal.Copy(ptr, result, 0, arrayLength);
+
+        return result;
     }
 }
