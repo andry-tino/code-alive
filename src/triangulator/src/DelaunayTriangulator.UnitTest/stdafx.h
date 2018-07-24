@@ -24,6 +24,7 @@
 
 // My stuff
 #include "../DelaunayTriangulator/DelaunayTriangulator.h"
+#include "../DelaunayTriangulator/triangulator.h"
 
 // CGAL stuff
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>

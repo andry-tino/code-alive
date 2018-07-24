@@ -6,6 +6,7 @@ Andrea Tino - 2018
 #define DELAUNAYTRIANGULATOR_H
 
 #include "interop.h"
+#include "triangulator.h"
 
 #include <vector>
 #include <list>
@@ -51,6 +52,12 @@ namespace CodeAlive
 		This class ensures that the final set of triangles defines a convex hull properly triangulated.
 		*/
 		class EXPORT_API DelaunayTriangulator {
+			// Friendship decl
+			friend int ::codealive_triangulator_get_vertices_num();
+			friend int ::codealive_triangulator_get_triangles_vlen();
+			friend double ::codealive_triangulator_get_vertex(int, int);
+			friend int* ::codealive_triangulator_get_triangles();
+
 		public: // Types
 			typedef std::vector<Point>::const_iterator vertices_const_iterator;
 			typedef std::vector<int>::const_iterator triangles_const_iterator;
