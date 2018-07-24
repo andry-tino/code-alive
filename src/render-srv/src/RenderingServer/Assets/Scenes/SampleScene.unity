@@ -334,6 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ServerPort: 8000
   ServerHostName: localhost
+  CellInstanceManager: {fileID: 885758189}
 --- !u!1 &1434918812
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public string ServerHostName = "localhost";
 
+    public Instantiator CellInstanceManager;
+
     #endregion
 
     private Communicator communicator;
@@ -39,6 +41,14 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Renderer server is ready listening on: {this.Address}!");
 	}
+
+    void OnDestroy()
+    {
+        this.DetachEvents();
+        this.communicator.Dispose();
+
+        Debug.Log("Renderer server disposed!");
+    }
 
     void InitializeCommunicator()
     {
@@ -61,11 +71,18 @@ public class GameManager : MonoBehaviour
         this.communicator.NewCellOccurred += OnNewCellOccurred;
     }
 
+    void DetachEvents()
+    {
+        this.communicator.DiagnosticOccurred -= OnDiagnosticOccurred;
+        this.communicator.MessageExchangeOccurred -= OnMessageExchangeOccurred;
+        this.communicator.NewCellOccurred -= OnNewCellOccurred;
+    }
+
     #region Render operations
 
     void RenderNewCell(string id)
     {
-        
+        this.CellInstanceManager.CreateNewCell();
     }
 
     void RenderMessageExchange(string name, string srcId, string dstId)
