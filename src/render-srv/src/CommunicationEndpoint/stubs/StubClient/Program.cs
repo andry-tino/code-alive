@@ -5,10 +5,12 @@
 namespace CodeAlive.Communication.Stubs
 {
     using System;
+    using System.IO;
 
     public class StubClient
     {
         private const string CommandEcho = "echo";
+        private const string CommandNewInstance = "new";
         private const string CommandQuit = "quit";
 
         private const short DefaultPort = 8000;
@@ -53,6 +55,12 @@ namespace CodeAlive.Communication.Stubs
             if (input == CommandEcho)
             {
                 return svc.Echo(new RenderingApi.DiagnosticRenderingRequest() { Content = "This is an echo" });
+            }
+
+            if (input == CommandNewInstance)
+            {
+                svc.RenderNewCell(new RenderingApi.NewInstanceRenderingRequest() { InstanceId = $"Class@{Path.GetRandomFileName().Replace(".", "").Substring(0, 8)}" });
+                return "Done";
             }
 
             if (input == CommandQuit)

@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
 	void Start() {
         this.InitializeCommunicator();
         this.AttachEvents();
+
+        Debug.Log($"Renderer server is ready listening on: {this.Address}!");
 	}
 
     void InitializeCommunicator()
@@ -63,10 +65,7 @@ public class GameManager : MonoBehaviour
 
     void RenderNewCell(string id)
     {
-        var cellBuilder = new StaticCellMeshBuilder();
-        var mesh = cellBuilder.Create();
-
-        Instantiate(mesh);
+        
     }
 
     void RenderMessageExchange(string name, string srcId, string dstId)
@@ -97,4 +96,6 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    string Address => $"{this.ServerHostName}:{this.ServerPort}";
 }
