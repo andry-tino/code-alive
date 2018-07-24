@@ -32,6 +32,15 @@ int* fun4(int* p1, int l) {
 	return 0;
 }
 
+MyStruct fun5() {
+	MyStruct* s = new MyStruct;
+	s->a = 10.5;
+	s->b = 2;
+	s->c = 30.5;
+
+	return *s;
+}
+
 int relmem(int* arr) {
 	delete[] arr;
 	return 0;
