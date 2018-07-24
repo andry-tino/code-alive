@@ -32,6 +32,7 @@ namespace TriangulatorUnitTest
 
 			for (int i = 0; i < triangles_len; i++) {
 				Assert::IsFalse(*(triangles_ptr + i) < 0);
+				Assert::IsFalse(*(triangles_ptr + i) >= triangles_len); // Indices, so they should not overflow
 			}
 
 			// Get vertices

@@ -121,8 +121,8 @@
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.dll $(TargetDir) /y /d</Command>
-      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.lib $(TargetDir) /y /d</Command>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.dll $(TargetDir) /y</Command>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.lib $(TargetDir) /y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copied source dlls</Message>
@@ -164,8 +164,8 @@
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.dll $(TargetDir) /y /d</Command>
-      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.lib $(TargetDir) /y /d</Command>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.dll $(TargetDir) /y</Command>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.lib $(TargetDir) /y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copied source dlls</Message>
