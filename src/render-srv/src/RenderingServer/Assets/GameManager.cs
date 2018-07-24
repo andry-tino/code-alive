@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     void RenderNewCell(string id)
     {
-        this.CellInstanceManager.CreateNewCell();
+        this.CellInstanceManager.CreateNewCell(id);
     }
 
     void RenderMessageExchange(string name, string srcId, string dstId)
