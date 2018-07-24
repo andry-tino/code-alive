@@ -29,7 +29,9 @@ public class Instantiator : MonoBehaviour
 
     #endregion
 
-    private bool requested = false;
+    // Request handling
+    private InstantiationRequest requested = null;
+
     private List<Transform> instances = new List<Transform>(); // Instantiated objects
     private int direction = 0; // 0 1 2 3 4 5 => X+ X- Y+ Y- Z+ Z- (mod6)
     private int modulo = 1;
@@ -39,22 +41,30 @@ public class Instantiator : MonoBehaviour
     }
     
 	void Update() {
-        if (this.requested)
+        if (this.requested != null)
         {
             Transform copy = Instantiate(this.Object, this.NewDisplacementVector, Quaternion.identity);
-            copy.name = this.NewName(this.Object.name ?? "obj");
+
+            // Assign new name
+            // 1. Requested name
+            // 2. Otherwise, template object prefixed name
+            // 3. Otherwise default prefixed name
+            copy.name = this.requested.Name ?? this.NewName(this.Object.name ?? "obj");
 
             // Add to cache
             this.instances.Add(copy);
 
             // Reset
-            this.requested = false;
+            this.requested = null;
         }
 	}
 
-    public void CreateNewCell()
+    public void CreateNewCell(string name = null)
     {
-        this.requested = true;
+        this.requested = new InstantiationRequest()
+        {
+            Name = name
+        };
     }
 
     private Vector3 NewDisplacementVector
@@ -95,4 +105,13 @@ public class Instantiator : MonoBehaviour
             this.modulo++;
         }
     }
+
+    #region Types
+
+    private class InstantiationRequest
+    {
+        public string Name { get; set; }
+    }
+
+    #endregion
 }
