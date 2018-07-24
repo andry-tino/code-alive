@@ -25,7 +25,7 @@ public class Instantiator : MonoBehaviour
     /// The modulo of the placement vector.
     /// The placement vector will be a rough multiple of this value.
     /// </summary>
-    public float PlacementVectorBaseModule = 1.5f;
+    public float PlacementVectorBaseModule = 2.5f;
 
     #endregion
 
