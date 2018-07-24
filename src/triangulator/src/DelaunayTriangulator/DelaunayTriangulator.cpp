@@ -17,10 +17,20 @@ Andrea Tino - 2018
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Surface_mesh.h>
 #include <CGAL/convex_hull_3.h>
+#include <CGAL/Simple_cartesian.h>
+#include <CGAL/point_generators_3.h>
+#include <CGAL/algorithm.h>
 
 #include "DelaunayTriangulator.h"
 
 // Constructors
+
+CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const int& number_vertices)
+{
+	this->points = std::vector<Point>();
+	this->create_rnd_points(number_vertices, 1);
+	this->performed = false;
+}
 
 CodeAlive::Triangulation::DelaunayTriangulator::DelaunayTriangulator(const std::list<CodeAlive::Triangulation::Point>& vertices)
 {
@@ -111,4 +121,29 @@ int CodeAlive::Triangulation::DelaunayTriangulator::get_vertex_index(const CodeA
 {
 	Point_3 p(point.X, point.Y, point.Z);
 	return this->p2i[p];
+}
+
+void CodeAlive::Triangulation::DelaunayTriangulator::create_rnd_points(const int& num, const double& radius)
+{
+	typedef CGAL::Simple_cartesian<double>				R;
+	typedef R::Point_3									CGALPoint;
+	typedef CGAL::Creator_uniform_3<double, CGALPoint>	Creator;
+
+	// Create test point set. Prepare a vector for 1000 points.
+	std::vector<CGALPoint> points;
+	points.reserve(num);
+
+	// Create points within a sphere of specified radius.
+	CGAL::Random_points_in_sphere_3<CGALPoint, Creator> g(radius);
+	CGAL::cpp11::copy_n(g, num, std::back_inserter(points));
+
+	// Use a random permutation to hide the creation history of the point set.
+	CGAL::cpp98::random_shuffle(points.begin(), points.end());
+
+	// Fill the instance vector
+	this->points.clear();
+	for (std::vector<CGALPoint>::iterator it = points.begin(); it != points.end(); it++) {
+		Point p(it->x(), it->y(), it->z());
+		this->points.push_back(p);
+	}
 }

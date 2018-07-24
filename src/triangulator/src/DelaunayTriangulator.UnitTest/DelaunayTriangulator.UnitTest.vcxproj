@@ -120,6 +120,13 @@
       <AdditionalDependencies>$(CGALDirPath)\build\lib\Debug\CGAL-vc140-mt-gd-4.12.lib;$(CGALDirPath)\auxiliary\gmp\lib\libgmp-10.lib;$(CGALDirPath)\auxiliary\gmp\lib\libmpfr-4.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\Users\antino\Documents\GitHub\code-alive\src\triangulator\src\DelaunayTriangulator\Debug\DelaunayTriangulator.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.dll $(TargetDir) /y /d</Command>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.lib $(TargetDir) /y /d</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copied source dlls</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -156,6 +163,13 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.dll $(TargetDir) /y /d</Command>
+      <Command>xcopy.exe ..\DelaunayTriangulator\$(Configuration)\*.lib $(TargetDir) /y /d</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copied source dlls</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

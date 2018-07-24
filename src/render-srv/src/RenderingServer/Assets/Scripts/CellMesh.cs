@@ -29,8 +29,32 @@ public class CellMesh : MonoBehaviour
             2, 0, 3
         };
 
+        var normals = new Vector3[]
+        {
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward
+        };
+
         var mesh = GetComponent<MeshFilter>().mesh = new Mesh();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.normals = normals;
+    }
+
+    void Update()
+    {
+        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        Vector3[] vertices = mesh.vertices;
+        Vector3[] normals = mesh.normals;
+
+        for (int i = 0, l = vertices.Length; i < l; i++)
+        {
+            vertices[i] += normals[i] * 0.002f * Mathf.Sin(Time.time);
+        }
+        
+        mesh.vertices = vertices;
     }
 }

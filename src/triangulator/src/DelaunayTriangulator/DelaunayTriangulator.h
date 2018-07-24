@@ -27,6 +27,19 @@ namespace CodeAlive
 			*/
 			typedef double RF;
 
+		public: // Ctors
+			Point() {
+				this->X = 0;
+				this->Y = 0;
+				this->Z = 0;
+			}
+
+			Point(const RF& x, const RF& y, const RF& z) {
+				this->X = x;
+				this->Y = y;
+				this->Z = z;
+			}
+
 		public: // Members
 			RF X;
 			RF Z;
@@ -56,6 +69,7 @@ namespace CodeAlive
 			bool performed;
 
 		public: // Ctors
+			explicit DelaunayTriangulator(const int&);
 			explicit DelaunayTriangulator(const std::list<Point>&);
 			explicit DelaunayTriangulator(const std::vector<Point>&);
 			DelaunayTriangulator(const DelaunayTriangulator&);
@@ -69,6 +83,9 @@ namespace CodeAlive
 			vertices_const_iterator vertices_end() const { return this->vertices.end(); }
 			triangles_const_iterator triangles_begin() const { return this->triangles.begin(); }
 			triangles_const_iterator triangles_end() const { return this->triangles.end(); }
+
+		private:
+			void create_rnd_points(const int&, const double&);
 		};
 
 	} // ns Triangulation
