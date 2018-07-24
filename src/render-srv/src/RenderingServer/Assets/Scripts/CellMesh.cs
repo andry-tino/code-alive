@@ -116,16 +116,18 @@ public class CellMesh : MonoBehaviour
 
     void Update()
     {
-        //Mesh mesh = GetComponent<MeshFilter>().mesh;
-        //Vector3[] vertices = mesh.vertices;
-        //Vector3[] normals = mesh.normals;
+        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        Vector3[] vertices = mesh.vertices;
+        Vector3[] normals = mesh.normals;
 
-        //for (int i = 0, l = vertices.Length; i < l; i++)
-        //{
-        //    vertices[i] += normals[i] * 0.002f * Mathf.Sin(Time.time);
-        //}
-        
-        //mesh.vertices = vertices;
+        System.Random rnd = new System.Random();
+
+        for (int i = 0, l = vertices.Length; i < l; i++)
+        {
+            vertices[i] += normals[i] * 0.002f * rnd.Next(0, 10) * Mathf.Sin(Time.time);
+        }
+
+        mesh.vertices = vertices;
     }
 
     private static int[] ExtractArray(IntPtr ptr, int arrayLength)
