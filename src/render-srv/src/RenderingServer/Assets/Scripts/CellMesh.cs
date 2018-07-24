@@ -64,10 +64,18 @@ public class CellMesh : MonoBehaviour
         // Clear up memory
         codealive_triangulator_dispose();
 
+        // Create vector of normals
+        Vector3[] normals = new Vector3[numberOfVertices];
+        for (int i = 0; i < numberOfVertices; i++)
+        {
+            normals[i] = -Vector3.forward;
+        }
+
         // Build mesh
         var mesh = GetComponent<MeshFilter>().mesh = new Mesh();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.normals = normals;
     }
 
     void CreateBasicVoxel()
