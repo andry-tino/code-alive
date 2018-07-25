@@ -59,7 +59,7 @@ public class Instantiator : MonoBehaviour
         }
 	}
 
-    public void CreateNewCell(string name = null)
+    public void CreateNew(string name = null)
     {
         this.requested = new InstantiationRequest()
         {

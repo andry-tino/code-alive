@@ -33,6 +33,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public Instantiator CellInstanceManager;
 
+    /// <summary>
+    /// The connector instantiator to use.
+    /// </summary>
+    public ConnectorInstantiator TubeInstanceManager;
+
     #endregion
 
     private Communicator communicator;
@@ -85,11 +90,13 @@ public class GameManager : MonoBehaviour
 
     void RenderNewCell(string id)
     {
-        this.CellInstanceManager.CreateNewCell(id);
+        this.CellInstanceManager.CreateNew(id);
+        this.TubeInstanceManager.CreateNew("Relation", "Cell", id ?? "Invalid");
     }
 
     void RenderMessageExchange(string name, string srcId, string dstId)
     {
+        this.TubeInstanceManager.CreateNew(name, srcId, dstId);
     }
 
     #endregion
