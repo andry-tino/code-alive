@@ -38,13 +38,13 @@ public class ConnectorInstantiator : MonoBehaviour
 
             if (srcObj == null)
             {
-                Debug.LogError($"[RenderMessageExchange] Could not find object with id `{this.requested.Src}`");
+                Debug.LogError($"[RenderMessageExchange] Could not find src object with id `{this.requested.Src}`");
                 return;
             }
 
             if (dstObj == null)
             {
-                Debug.LogError($"[RenderMessageExchange] Could not find object with id `{this.requested.Dst}`");
+                Debug.LogError($"[RenderMessageExchange] Could not find dst object with id `{this.requested.Dst}`");
                 return;
             }
 
