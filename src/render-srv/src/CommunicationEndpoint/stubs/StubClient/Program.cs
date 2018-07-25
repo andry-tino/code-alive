@@ -11,6 +11,7 @@ namespace CodeAlive.Communication.Stubs
     {
         private const string CommandEcho = "echo";
         private const string CommandNewInstance = "new";
+        private const string CommandMessageExchange = "msg";
         private const string CommandQuit = "quit";
 
         private const short DefaultPort = 8000;
@@ -59,7 +60,23 @@ namespace CodeAlive.Communication.Stubs
 
             if (input == CommandNewInstance)
             {
-                svc.RenderNewCell(new RenderingApi.NewInstanceRenderingRequest() { InstanceId = $"Class@{Path.GetRandomFileName().Replace(".", "").Substring(0, 8)}" });
+                svc.RenderNewCell(new RenderingApi.NewInstanceRenderingRequest() { InstanceId = $"Class@{RndStr}" });
+                return "Done";
+            }
+            if (input.Split(' ').Length == 2 && input.Split(' ')[0] == CommandNewInstance)
+            {
+                svc.RenderNewCell(new RenderingApi.NewInstanceRenderingRequest() { InstanceId = input.Split(' ')[1] });
+                return "Done";
+            }
+
+            if (input.Split(' ').Length == 4 && input.Split(' ')[0] == CommandMessageExchange)
+            {
+                svc.RenderInteraction(new RenderingApi.InteractionRenderingRequest()
+                {
+                    InvocationName = input.Split(' ')[1],
+                    SourceInstanceId = input.Split(' ')[2],
+                    DstInstanceId = input.Split(' ')[3]
+                });
                 return "Done";
             }
 
@@ -70,6 +87,8 @@ namespace CodeAlive.Communication.Stubs
 
             return "None";
         }
+
+        private static string RndStr => Path.GetRandomFileName().Replace(".", "").Substring(0, 8);
 
         private static string Help => $@"
             => '{CommandEcho}': Send an echo
