@@ -22,7 +22,7 @@ namespace CodeAlive.ClientSource.Basic
         public SourceRunner(ICommunicationService svc, int pause = 0)
         {
             this.svc = svc;
-            this.pause = 0;
+            this.pause = pause;
         }
         
         public void Run()
