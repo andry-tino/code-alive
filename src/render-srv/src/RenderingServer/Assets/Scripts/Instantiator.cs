@@ -34,7 +34,8 @@ public class Instantiator : MonoBehaviour
 
     private List<Transform> instances = new List<Transform>(); // Instantiated objects
     private int direction = 0; // 0 1 2 3 4 5 => X+ X- Y+ Y- Z+ Z- (mod6)
-    private int modulo = 1;
+    private int modulo = 1; // Used for generating spherical layers
+    private System.Random rnd = new System.Random();
 
     void Start()
     {
@@ -86,6 +87,10 @@ public class Instantiator : MonoBehaviour
             }
 
             pv = this.modulo * this.PlacementVectorBaseModule * pv;
+
+            // Tweak the vector so we display not a boring tetraheadrical structure
+            float displacementFactor = 0.5f * this.PlacementVectorBaseModule;
+            pv += displacementFactor * new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
 
             // Update placement quantities
             this.UpdateDirectionAndModulo();

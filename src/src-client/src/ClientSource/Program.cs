@@ -22,8 +22,8 @@ namespace CodeAlive.ClientSource
 
         private static ISource CreateSource(ICommunicationService svc)
         {
-            //return new Basic.SourceRunner(svc, 3000);
-            return new Basic.SourceRunner(svc);
+            return new Basic.SourceRunner(svc, 1000);
+            //return new Basic.SourceRunner(svc);
         }
     }
 }
