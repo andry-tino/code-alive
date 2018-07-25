@@ -13,6 +13,9 @@ namespace CodeAlive.Communication.RenderingApi
     [DataContract(Name = "NewInstanceRenderingRequest")]
     public class NewInstanceRenderingRequest : RenderingRequest
     {
+        [DataMember(Name = "ParentInstanceId", IsRequired = false)]
+        public string ParentInstanceId { get; set; }
+
         [DataMember(Name = "InstanceId", IsRequired = true)]
         public string InstanceId { get; set; }
     }

@@ -77,7 +77,8 @@ namespace CodeAlive.Communication
             // Unbind events
             this.service.DiagnosticReceived -= this.OnDiagnosticReceived;
             this.service.NewInstanceReceived -= this.OnNewInstanceReceived;
-            this.service.InteractionReceived -= this.InteractionReceived;
+            this.service.InteractionReceived -= this.OnInteractionReceived;
+            this.service.NewReferenceReceived -= this.OnNewReferenceReceived;
 
             // Remove references
             this.host = null;
@@ -91,6 +92,8 @@ namespace CodeAlive.Communication
         
         public event InteractionRenderingRequestHandler InteractionReceived;
 
+        public event GetReferenceRenderingRequestHandler NewReferenceReceived;
+
         #endregion
 
         private void EnsureInitilized()
@@ -103,7 +106,8 @@ namespace CodeAlive.Communication
             this.service = new CommunicationService();
             this.service.DiagnosticReceived += this.OnDiagnosticReceived;
             this.service.NewInstanceReceived += this.OnNewInstanceReceived;
-            this.service.InteractionReceived += this.InteractionReceived;
+            this.service.InteractionReceived += this.OnInteractionReceived;
+            this.service.NewReferenceReceived += this.OnNewReferenceReceived;
 
             this.host = new WebServiceHost(service, new Uri(this.Address));
             this.host.AddServiceEndpoint(typeof(RenderingApi.ICommunicationService), new WebHttpBinding(), "");
@@ -129,6 +133,11 @@ namespace CodeAlive.Communication
         private void OnInteractionReceived(InteractionRenderingRequest request)
         {
             this.InteractionReceived?.Invoke(request); // Redirect up above
+        }
+
+        private void OnNewReferenceReceived(GetReferenceRenderingRequest request)
+        {
+            this.NewReferenceReceived?.Invoke(request); // Redirect up above
         }
 
         #endregion

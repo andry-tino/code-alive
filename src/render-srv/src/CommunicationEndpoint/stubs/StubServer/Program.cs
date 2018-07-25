@@ -27,6 +27,7 @@ namespace CodeAlive.Communication.Stubs
             communicator.DiagnosticOccurred += OnDiagnosticOccurred;
             communicator.NewCellOccurred += OnNewCellOccurred;
             communicator.MessageExchangeOccurred += OnMessageExchangeOccurred;
+            communicator.NewReferenceOccurred += OnNewReferenceOccurred;
             communicator.Initialize(); // This starts the communicator
 
             Console.WriteLine("Ready!");
@@ -50,6 +51,11 @@ namespace CodeAlive.Communication.Stubs
         private static void OnMessageExchangeOccurred(MessageExchangeRenderingEvent e)
         {
             Console.WriteLine($"Message-Exchange occurred - Name: {e.InvocationName}, Src: {e.SourceId}, Dst: {e.DestinationId}");
+        }
+
+        private static void OnNewReferenceOccurred(NewReferenceRenderingEvent e)
+        {
+            Console.WriteLine($"New-Reference occurred - Instance: {e.InstanceId}, Parent: {e.ParentId}");
         }
 
         #endregion

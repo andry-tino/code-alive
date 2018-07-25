@@ -12,6 +12,7 @@ namespace CodeAlive.Communication.Stubs
         private const string CommandEcho = "echo";
         private const string CommandNewInstance = "new";
         private const string CommandMessageExchange = "msg";
+        private const string CommandNewReference = "ref";
         private const string CommandQuit = "quit";
 
         private const short DefaultPort = 8000;
@@ -76,6 +77,16 @@ namespace CodeAlive.Communication.Stubs
                     InvocationName = input.Split(' ')[1],
                     SourceInstanceId = input.Split(' ')[2],
                     DstInstanceId = input.Split(' ')[3]
+                });
+                return "Done";
+            }
+
+            if (input.Split(' ').Length == 3 && input.Split(' ')[0] == CommandNewReference)
+            {
+                svc.RenderReference(new RenderingApi.GetReferenceRenderingRequest()
+                {
+                    InstanceId = input.Split(' ')[1],
+                    ParentInstanceId = input.Split(' ')[2]
                 });
                 return "Done";
             }

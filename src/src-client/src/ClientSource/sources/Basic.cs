@@ -28,9 +28,9 @@ namespace CodeAlive.ClientSource.Basic
         public void Run()
         {
             // Create an instance (the root object)
-            this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Create an instance" });
-            this.svc.RenderNewCell(new NewInstanceRenderingRequest() { InstanceId = "root" });
-            this.Pause();
+            //this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Create an instance" });
+            //this.svc.RenderNewCell(new NewInstanceRenderingRequest() { InstanceId = "root" });
+            //this.Pause();
 
             // Create an instance
             var person = new Person();

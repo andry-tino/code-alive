@@ -47,6 +47,7 @@
     <Compile Include="events\EchoRenderingEvent.cs" />
     <Compile Include="events\MessageExchangeRenderingEvent.cs" />
     <Compile Include="events\NewCellRenderingEvent.cs" />
+    <Compile Include="events\NewReferenceRenderingEvent.cs" />
     <Compile Include="events\RenderingEvent.cs" />
     <Compile Include="service\CommunicationEndpoint.cs" />
     <Compile Include="Communicator.cs" />

@@ -12,6 +12,7 @@ namespace CodeAlive.Communication
     public delegate void DiagnosticRenderingEventHandler(DiagnosticRenderingEvent e);
     public delegate void NewCellRenderingEventHandler(NewCellRenderingEvent e);
     public delegate void MessageExchangeRenderingEventHandler(MessageExchangeRenderingEvent e);
+    public delegate void NewReferenceRenderingEventHandler(NewReferenceRenderingEvent e);
 
     /// <summary>
     /// The interface for interacting with the Communication API.
@@ -47,6 +48,7 @@ namespace CodeAlive.Communication
             this.svc.DiagnosticReceived += this.OnDiagnosticReceived;
             this.svc.NewInstanceReceived += this.OnNewInstanceReceived;
             this.svc.InteractionReceived += this.OnInteractionReceived;
+            this.svc.NewReferenceReceived += this.OnNewReferenceReceived;
 
             this.svc.Start(); // Start the service
         }
@@ -57,6 +59,7 @@ namespace CodeAlive.Communication
             this.svc.DiagnosticReceived -= this.OnDiagnosticReceived;
             this.svc.NewInstanceReceived -= this.OnNewInstanceReceived;
             this.svc.InteractionReceived -= this.OnInteractionReceived;
+            this.svc.NewReferenceReceived -= this.OnNewReferenceReceived;
 
             // Dispose stuff
             this.svc.Dispose();
@@ -79,6 +82,11 @@ namespace CodeAlive.Communication
         /// Fired when an exchange should be drawn.
         /// </summary>
         public event MessageExchangeRenderingEventHandler MessageExchangeOccurred;
+
+        /// <summary>
+        /// Fired when a new reference should be drawn.
+        /// </summary>
+        public event NewReferenceRenderingEventHandler NewReferenceOccurred;
 
         #endregion
 
@@ -110,6 +118,15 @@ namespace CodeAlive.Communication
             e.DestinationId = request.DstInstanceId;
 
             this.MessageExchangeOccurred?.Invoke(e);
+        }
+
+        private void OnNewReferenceReceived(GetReferenceRenderingRequest request)
+        {
+            var e = new NewReferenceRenderingEvent();
+            e.InstanceId = request.InstanceId;
+            e.ParentId = request.ParentInstanceId;
+
+            this.NewReferenceOccurred?.Invoke(e);
         }
 
         #endregion

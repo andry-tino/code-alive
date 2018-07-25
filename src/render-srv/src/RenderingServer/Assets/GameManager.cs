@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
     {
         this.communicator.DiagnosticOccurred += OnDiagnosticOccurred;
         this.communicator.MessageExchangeOccurred += OnMessageExchangeOccurred;
+        this.communicator.NewReferenceOccurred += OnNewReferenceOccurred;
         this.communicator.NewCellOccurred += OnNewCellOccurred;
     }
 
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
     {
         this.communicator.DiagnosticOccurred -= OnDiagnosticOccurred;
         this.communicator.MessageExchangeOccurred -= OnMessageExchangeOccurred;
+        this.communicator.NewReferenceOccurred -= OnNewReferenceOccurred;
         this.communicator.NewCellOccurred -= OnNewCellOccurred;
     }
 
@@ -106,6 +108,11 @@ public class GameManager : MonoBehaviour
         this.MsgInstanceManager.CreateNew("MsgEx", srcId, dstId);
     }
 
+    void RenderNewReference(string id, string parentId)
+    {
+        this.TubeInstanceManager.CreateNew(parentId, id);
+    }
+
     #endregion
 
     #region Event handlers
@@ -122,6 +129,13 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Message-Exchange Event received - Name: {e.InvocationName}, Src: {e.SourceId}, Dst: {e.DestinationId}");
 
         this.RenderMessageExchange(e.InvocationName, e.SourceId, e.DestinationId);
+    }
+
+    void OnNewReferenceOccurred(NewReferenceRenderingEvent e)
+    {
+        Debug.Log($"New-Reference Event received - Id: {e.InstanceId}, Parent: {e.ParentId}");
+
+        this.RenderNewReference(e.InstanceId, e.ParentId);
     }
 
     void OnDiagnosticOccurred(DiagnosticRenderingEvent e)

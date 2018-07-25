@@ -38,6 +38,11 @@ namespace CodeAlive.Communication.RenderingApi
             this.channel.RenderInteraction(message);
         }
 
+        public void RenderReference(GetReferenceRenderingRequest message)
+        {
+            this.channel.RenderReference(message);
+        }
+
         public void RenderNewCell(NewInstanceRenderingRequest message)
         {
             this.channel.RenderNewCell(message);

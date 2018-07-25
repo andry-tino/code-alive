@@ -11,6 +11,7 @@ namespace CodeAlive.Communication
     
     internal delegate void NewInstanceRenderingRequestHandler(NewInstanceRenderingRequest request);
     internal delegate void InteractionRenderingRequestHandler(InteractionRenderingRequest request);
+    internal delegate void GetReferenceRenderingRequestHandler(GetReferenceRenderingRequest request);
     internal delegate string DiagnosticRenderingRequestHandler(DiagnosticRenderingRequest request);
 
     /// <summary>
@@ -34,6 +35,11 @@ namespace CodeAlive.Communication
             this.InteractionReceived?.Invoke(message);
         }
 
+        public void RenderReference(GetReferenceRenderingRequest message)
+        {
+            this.NewReferenceReceived?.Invoke(message);
+        }
+
         #region Events
 
         /// <summary>
@@ -50,6 +56,11 @@ namespace CodeAlive.Communication
         /// Fired when an interaction is requested to be rendered.
         /// </summary>
         public event InteractionRenderingRequestHandler InteractionReceived;
+
+        /// <summary>
+        /// Fired when a new reference is requested to be rendered.
+        /// </summary>
+        public event GetReferenceRenderingRequestHandler NewReferenceReceived;
 
         #endregion
     }

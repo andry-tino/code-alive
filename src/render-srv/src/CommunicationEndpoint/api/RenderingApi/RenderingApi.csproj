@@ -47,6 +47,7 @@
     <Compile Include="ICommunicationService.cs" />
     <Compile Include="messages\DiagnosticRenderingRequest.cs" />
     <Compile Include="messages\EchoRenderingRequest.cs" />
+    <Compile Include="messages\GetReferenceRenderingRequest.cs" />
     <Compile Include="messages\InteractionRenderingRequest.cs" />
     <Compile Include="messages\NewInstanceRenderingRequest.cs" />
     <Compile Include="messages\RenderingRequest.cs" />

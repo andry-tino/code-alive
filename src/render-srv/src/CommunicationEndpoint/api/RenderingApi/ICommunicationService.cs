@@ -20,7 +20,6 @@ namespace CodeAlive.Communication.RenderingApi
         /// <summary>
         /// An echo service message.
         /// </summary>
-        /// <param name="message">Message to be echoed mack by the server.</param>
         /// <returns></returns>
         [OperationContract]
         [WebInvoke]
@@ -29,7 +28,6 @@ namespace CodeAlive.Communication.RenderingApi
         /// <summary>
         /// Ask to render a new cell.
         /// </summary>
-        /// <param name="cellId"></param>
         [OperationContract]
         [WebInvoke]
         void RenderNewCell(NewInstanceRenderingRequest message);
@@ -37,11 +35,15 @@ namespace CodeAlive.Communication.RenderingApi
         /// <summary>
         /// Ask to render an interaction between two cells.
         /// </summary>
-        /// <param name="interactionName"></param>
-        /// <param name="sourceCellId"></param>
-        /// <param name="dstCellId"></param>
         [OperationContract]
         [WebInvoke]
         void RenderInteraction(InteractionRenderingRequest message);
+
+        /// <summary>
+        /// Ask to render an aquired reference relation.
+        /// </summary>
+        [OperationContract]
+        [WebInvoke]
+        void RenderReference(GetReferenceRenderingRequest message);
     }
 }
