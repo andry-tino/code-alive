@@ -38,6 +38,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public ConnectorInstantiator TubeInstanceManager;
 
+    /// <summary>
+    /// The message instantiator to use.
+    /// </summary>
+    public MsgInstantiator MsgInstanceManager;
+
     #endregion
 
     private Communicator communicator;
@@ -91,12 +96,14 @@ public class GameManager : MonoBehaviour
     void RenderNewCell(string id)
     {
         this.CellInstanceManager.CreateNew(id);
-        this.TubeInstanceManager.CreateNew("Relation", "Cell", id ?? "Invalid");
+
+        // Making an assumption for now that all relations are tied to the root object (simplification)
+        this.TubeInstanceManager.CreateNew("Cell", id ?? "Invalid");
     }
 
     void RenderMessageExchange(string name, string srcId, string dstId)
     {
-        this.TubeInstanceManager.CreateNew(name, srcId, dstId);
+        this.MsgInstanceManager.CreateNew("MsgEx", srcId, dstId);
     }
 
     #endregion
