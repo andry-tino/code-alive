@@ -57,6 +57,10 @@ public class ConnectorInstantiator : MonoBehaviour
             Vector3 position = start + (offset / 2f);
 
             Transform copy = Instantiate(this.Object, position, Quaternion.identity);
+
+            // Assign a name which will reflect the connector's nature
+            copy.name = $"{this.requested.Src}__{this.requested.Dst}";
+
             copy.transform.up = offset;
             copy.transform.localScale = scale;
 
