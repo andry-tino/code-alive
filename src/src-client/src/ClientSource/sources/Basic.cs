@@ -41,13 +41,13 @@ namespace CodeAlive.ClientSource.Basic
             // Assign a property
             person.Name = "Claus";
             this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
-            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Name", SourceInstanceId = "root", DstInstanceId = "Person@person" });
+            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Name", SourceInstanceId = "Cell", DstInstanceId = "Person@person" });
             this.Pause();
 
             // Assign a property
             person.Surname = "Valca";
             this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
-            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Surname", SourceInstanceId = "root", DstInstanceId = "Person@person" });
+            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Surname", SourceInstanceId = "Cell", DstInstanceId = "Person@person" });
             this.Pause();
 
             // Create an instance
@@ -59,7 +59,7 @@ namespace CodeAlive.ClientSource.Basic
             // Assign a property
             piano.Name = "Classic Piano";
             this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
-            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Instrument.Name", SourceInstanceId = "root", DstInstanceId = "Instrument@piano" });
+            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Instrument.Name", SourceInstanceId = "Cell", DstInstanceId = "Instrument@piano" });
             this.Pause();
 
             // Create an instance
@@ -71,25 +71,27 @@ namespace CodeAlive.ClientSource.Basic
             // Assign a property
             harmonica.Name = "Harmonica";
             this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
-            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Instrument.Name", SourceInstanceId = "root", DstInstanceId = "Instrument@harmonica" });
+            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Instrument.Name", SourceInstanceId = "Cell", DstInstanceId = "Instrument@harmonica" });
             this.Pause();
 
             // Assign a property
             person.Instrument1 = piano;
             this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
-            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Instrument1", SourceInstanceId = "root", DstInstanceId = "Person@person" });
+            this.svc.RenderReference(new GetReferenceRenderingRequest() { InstanceId = "Instrument@piano", ParentInstanceId = "Person@person" });
+            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Instrument1", SourceInstanceId = "Instrument@piano", DstInstanceId = "Person@person" });
             this.Pause();
 
             // Assign a property
             person.Instrument2 = harmonica;
             this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Assign a property" });
-            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Instrument2", SourceInstanceId = "root", DstInstanceId = "Person@person" });
+            this.svc.RenderReference(new GetReferenceRenderingRequest() { InstanceId = "Instrument@harmonica", ParentInstanceId = "Person@person" });
+            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Instrument2", SourceInstanceId = "Instrument@harmonica", DstInstanceId = "Person@person" });
             this.Pause();
 
             // Execute a method returning a value
             var result = person.Play();
             this.svc.Echo(new DiagnosticRenderingRequest() { Content = "Execute a method returning a value" });
-            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Play", SourceInstanceId = "root", DstInstanceId = "Person@person" });
+            this.svc.RenderInteraction(new InteractionRenderingRequest() { InvocationName = "Person.Play", SourceInstanceId = "Cell", DstInstanceId = "Person@person" });
             this.Pause();
         }
 
