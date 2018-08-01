@@ -1,5 +1,7 @@
-# code-alive
+# code-alive (sealed)
 Hackathon - Visualizing computer programs as living beings while they run
+
+**Important** This branch will not have modifications. It is meant to contain the code created for the hackathon.
 
 ## Description
 How do humans function? We are made of cells and these cells interact together. They split, they interact and cooperate with each other to do amazing things. If you took a sample of blood, a neural tissue, whatever biological sample from a human body and inspected it using a microscope, you could see all these cells in action.
